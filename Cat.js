@@ -71,16 +71,16 @@ class Cat {
 		}
 	}
 
-	checkCollisions() {
+	checkCollisions(callback) {
 		// If hit collision box
 		for (var i = 0; i < collision.length; i++) {
-			if (collision[i].intersects(this.collision_box)) {
+			if (collision[i].intersects(this.collision_box) !== false) {
 				this.is_colliding = true;
-				return true;
+				callback(collision[i]);
 			}
 		}
 		this.is_colliding = false;
-		return false;
+		callback(false);
 	}
 
 	// Update every frame
@@ -92,15 +92,23 @@ class Cat {
 		}
 
 		if (this.is_colliding === false) {
-			if (this.checkCollisions()) {
-				//console.log('hit first');
-				this.velocity.mult(0);
-				this.acceleration.mult(0);
-				this.location.y -= 1;
-				//this.applyForce(createVector(0, -10));
-			}
-		} else if (this.checkCollisions()) {
-			this.velocity.x *= .2;
+			var that = this;
+			this.checkCollisions(function (collider) {
+				if (collider) {
+					//console.log('hit first');
+					that.velocity.mult(0);
+					that.acceleration.mult(0);
+					that.location.y = collider.location.y;
+					//this.applyForce(createVector(0, -10));
+				}
+			});
+		} else {
+			var that = this;
+			this.checkCollisions(function (collider) {
+				if (collider) {
+					that.velocity.x *= 0.9;
+				}
+			});
 		}
 
 
