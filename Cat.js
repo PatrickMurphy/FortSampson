@@ -76,8 +76,10 @@ class Cat {
 				} else {
 					this.setState(states.moving);
 				}
-			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping) && this.getState() !== states.movejump) {
+			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping && this.getState() !== states.movejump)) {
+				keyCode = undefined;
 				this.setState(states.jumping);
+
 				this.moveUp();
 			}
 		} else if (this.getState() !== states.jumping && this.getState() !== states.movejump) {
@@ -132,7 +134,7 @@ class Cat {
 						that.location.y -= 1;
 						if (that.getState() === states.movejump) {
 							that.setState(states.moving);
-						} else {
+						} else if (that.getState() !== states.moving) {
 							that.setState(states.idle);
 						}
 					}
@@ -143,10 +145,10 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					if (collider.type === 'rollingrock') {
+					if (collider.type === item_types.rollingrock.string_id) {
 						that.collectItem(collider);
-					} else {
-						that.velocity.x *= 0.7;
+					} else if (!keyIsPressed) {
+						that.velocity.x *= 0.5;
 					}
 				}
 			});
@@ -178,7 +180,7 @@ class Cat {
 
 	// Jump action, up arrow TODO: Add Space button, wasd
 	moveUp() {
-		this.location.y -= 5;
+		//this.location.y -= 5;
 		this.applyForce(createVector(0, -30));
 	}
 
