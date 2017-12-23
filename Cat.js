@@ -95,10 +95,10 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					//console.log('hit first');
+					console.log('hit first');
 					that.velocity.mult(0);
 					that.acceleration.mult(0);
-					that.location.y = collider.location.y;
+					that.location.y -= 1;
 					//this.applyForce(createVector(0, -10));
 				}
 			});
