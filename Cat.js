@@ -80,15 +80,20 @@ class Cat {
 				this.setState(states.jumping);
 				this.moveUp();
 			}
+		} else if (this.getState() !== states.jumping && this.getState() !== states.movejump) {
+			this.setState(states.idle);
 		}
+
 	}
 
 	checkCollisions(callback) {
 		// If hit collision box
 		for (var i = 0; i < collision_manager.getCollisions().length; i++) {
-			if (collision_manager.getCollision(i).intersects(this.collision_box) !== false) {
-				this.is_colliding = true;
-				callback(collision_manager.getCollision(i));
+			if (typeof collision_manager.getCollision(i) !== 'undefined') {
+				if (collision_manager.getCollision(i).intersects(this.collision_box) !== false) {
+					this.is_colliding = true;
+					callback(collision_manager.getCollision(i));
+				}
 			}
 		}
 		this.is_colliding = false;
@@ -96,10 +101,14 @@ class Cat {
 	}
 
 	collectItem(item) {
-		if (this.inventory.hasOwnProperty(item.type))
+		if (this.inventory.hasOwnProperty(item.type)) {
 			this.inventory[item.type] += 1;
-		else
+		} else {
 			this.inventory[item.type] = 1;
+		}
+
+		item.parent.collected = true;
+		collision_manager.removeCollision(item.id);
 	}
 
 	// Update every frame
@@ -115,7 +124,7 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					if (collider.type === 'rollingrock') {
+					if (collider.type === item_types.rollingrock.string_id) {
 						that.collectItem(collider);
 					} else {
 						that.velocity.mult(0);

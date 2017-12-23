@@ -1,25 +1,11 @@
-/*
--------------------
-Tile ID Reference
--------------------
-
-Tile #      Collisions	Objects		Name				Description
-	0		No			Yes			Air                 The basic blank tile. TODO: should these be objects? or default to background
-	1		Yes			Yes			Grass Platform 1    The basic platform, dirt with grass, flat, can float or be the lowest ground.
-	2		Yes			Yes			Grass Platform RR   This is #1, with a floating rolling rock. TODO: Pass an array of object options if accepts objects instead of repetitive tiles
-
------------------
-Tile Class
------------------
-This class is the element of each map piece
-*/
-
 class Collision {
-	constructor(typeID, loc, sizes) {
+	constructor(typeID, loc, sizes, parent) {
 		this.location = loc;
 		this.cellLocation = displayToVector(loc);
 		this.type = typeID; // Type id, refer to comment above
 		this.sizes = sizes; // the unique index count of this tile
+		this.id = 0;
+		this.parent = parent || undefined;
 		// TODO: the case statment to assign collisions and objects based on type. json object with properties
 	}
 

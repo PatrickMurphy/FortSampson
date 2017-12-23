@@ -5,8 +5,9 @@ class CollisionManager {
 
 	// Collision Functions: Todo add collisions
 	addCollision(c) {
+		c.id = this.collision_collection.length;
 		this.collision_collection.push(c);
-		return this.collision_collection.length - 1;
+		return c.id;
 	}
 
 	getCollisions() {
@@ -17,13 +18,14 @@ class CollisionManager {
 		return this.collision_collection[id];
 	}
 
-	removeCollection(id) {
+	removeCollision(id) {
 		delete this.collision_collection[id];
 	}
 
 	display() {
 		for (var i = 0; i < this.collision_collection.length; i++) {
-			this.collision_collection[i].display();
+			if (typeof this.collision_collection[i] !== 'undefined')
+				this.collision_collection[i].display();
 		}
 	}
 

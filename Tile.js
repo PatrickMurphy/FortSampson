@@ -16,7 +16,6 @@ This class is the element of each map piece
 
 class Tile {
 	constructor(loc, typeID, i, items) {
-		console.log(items);
 		this.location = loc; // this is the x,y position in the tile map, not the display coordinates
 		this.displayVector = vectorToDisplay(this.location);
 		this.type = typeID; // Type id, refer to comment above
@@ -26,7 +25,7 @@ class Tile {
 		this.items = []; // array to hold objects created items
 		// TODO: the case statment to assign collisions and objects based on type. json object with properties
 		for (var i = 0; i < items.length; i++) {
-			this.items.push(new Item(items[i], this.displayVector.add(items[i].offset)));
+			this.items.push(new Item(items[i], this.displayVector.copy().add(items[i].offset)));
 		}
 	}
 
@@ -34,10 +33,12 @@ class Tile {
 		for (var i = 0; i < this.items.length; i++) {
 			this.items[i].display();
 		}
-		if (this.type === 0) { // TODO: Why is this a string?
+
+		if (this.type == 0) { // TODO: Why is this a string?
 			noFill(); // air TODO: temp fix, just exit the function at this point?
-		} else if (this.type === 1 || this.type === 2) {
-			image(t1, cell_size * (this.location.x), this.location.y * cell_size); // display cell background
+		} else if (this.type == 1 || this.type == 2) {
+			console.log('enter');
+			image(t1, this.displayVector.x, this.displayVector.y); // display cell background
 		}
 
 
