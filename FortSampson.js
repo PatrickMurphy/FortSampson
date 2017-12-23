@@ -10,6 +10,7 @@ var t3;
 var t4;
 var levels; //
 var collision; // an x,y multidimensional array that contains bounding boxes for the cat to collide to
+var DEBUG = false;
 
 function preload() {
     t1 = loadImage('data/tile1.png');
