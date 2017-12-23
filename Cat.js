@@ -3,6 +3,8 @@ class Cat {
 		// The display location of the cat
 		this.location = vectorToDisplay(loc);
 
+		this.cellLocation = loc;
+
 		// The cat Type ID: only toby so far // Todo: add cats
 		this.type = typeID;
 
@@ -32,6 +34,8 @@ class Cat {
 		this.state = states.idle;
 
 		this.is_colliding = false;
+
+		this.inventory = {};
 	}
 
 	setState(state) {
@@ -91,8 +95,16 @@ class Cat {
 		callback(false);
 	}
 
+	collectItem(item) {
+		if (this.inventory.hasOwnProperty(item.type))
+			this.inventory[item.type] += 1;
+		else
+			this.inventory[item.type] = 1;
+	}
+
 	// Update every frame
 	update() {
+		this.cellLocation = displayToVector(this.location);
 		this.handleInput();
 
 		if (this.state !== states.idle) {
@@ -103,12 +115,15 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					console.log('hit first');
-					that.velocity.mult(0);
-					that.acceleration.mult(0);
-					that.location.y -= 1;
-					if (that.getState() === states.movejump) {
-						that.setState(states.moving);
+					if (collider.type === 'rollingrock') {
+						that.collectItem(collider);
+					} else {
+						that.velocity.mult(0);
+						that.acceleration.mult(0);
+						that.location.y -= 1;
+						if (that.getState() === states.movejump) {
+							that.setState(states.moving);
+						}
 					}
 					//this.applyForce(createVector(0, -10));
 				}
@@ -117,7 +132,11 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					that.velocity.x *= 0.4;
+					if (collider.type === 'rollingrock') {
+						that.collectItem(collider);
+					} else {
+						that.velocity.x *= 0.7;
+					}
 				}
 			});
 		}
@@ -157,7 +176,8 @@ class Cat {
 		// Display cat image, use ternary to decide what image based on direction
 		// TODO: use a function to determine image, enable animation
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
-
+		fill(0, 0, 255);
+		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
 		if (DEBUG === 'col') {
 			fill(color(255, 0, 0));
 			if (this.is_colliding) {
@@ -166,6 +186,7 @@ class Cat {
 
 			text(Object.keys(states)[this.state], 16, 50);
 			text(Math.round(this.velocity.x) + ', ' + round(this.velocity.y), 16, 60);
+			text(this.cellLocation.x + ', ' + this.cellLocation.y, 16, 70);
 			this.collision_box.display();
 		}
 	}

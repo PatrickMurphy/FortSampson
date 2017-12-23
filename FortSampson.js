@@ -15,15 +15,9 @@ var t4; // Image
 
 var cat1; // Cat the player object
 
-var DEBUG = false; //'col'; //false; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = 'col'; //false; // Debug flag, false is normal, true for bg, 'col' for collisions
 
-var states = {
-	idle: 0,
-	moving: 1,
-	jumping: 2,
-	movejump: 3,
-	dead: 4
-};
+var item_types, item_names, tile_names, tile_types, states;
 
 function preload() {
 	t1 = loadImage('data/tile1.png');
@@ -44,9 +38,6 @@ function setup() {
 	cell_x_count = 8;
 	cell_y_count = 9;
 
-	// Add Cat Object, Player 1
-	cat1 = new Cat(createVector(0, 7), 1, 1);
-
 	// Map Options
 	level = [];
 	collision = [];
@@ -65,7 +56,51 @@ function setup() {
 			  "00000001" +
 			  "00000001" +
 			  "00000001"];
+
+	// add enums
+	setupEnums();
+
+	// Add Cat Object, Player 1
+	cat1 = new Cat(createVector(0, 7), 1, 1);
+
+	// setup level
 	addLevel(0);
+}
+
+function setupEnums() {
+	states = {
+		idle: 0,
+		moving: 1,
+		jumping: 2,
+		movejump: 3,
+		dead: 4
+	};
+	item_types = {
+		rollingrock: {
+			id: 0,
+			string_id: 'rollingrock',
+			title: 'Rolling Rock',
+			image: t4,
+			offset: createVector(30, 0)
+		}
+	}
+	item_names = ['rollingrock'];
+
+
+	tile_types = {
+		air: {
+			id: 0,
+			collisions: false,
+			objects: true
+		},
+		grass: {
+			id: 1,
+			collisions: true,
+			objects: true
+		}
+	};
+	tile_names = ['air', 'grass'];
+
 }
 
 
@@ -74,8 +109,10 @@ function addLevel(levelID) {
 	var lev = levels[levelID].split('');
 	if (lev.length >= 100) {
 		for (var i = 0; i <= min(500, lev.length); i++) {
-			level.push(new Tile(indexToVector(i), lev[i], i));
+			var items_temp = lev[i] == 2 ? [item_types.rollingrock] : [];
+			level.push(new Tile(indexToVector(i), lev[i], i, items_temp));
 			if (lev[i] > 0) {
+				// move to tile constructor
 				var loc = indexToDisplay(i);
 				loc.y = loc.y + cell_size - 23;
 				addCollision(new Collision('box', loc, createVector(cell_size, 23)));
@@ -87,6 +124,7 @@ function addLevel(levelID) {
 // Collision Functions: Todo add collisions
 function addCollision(c) {
 	collision.push(c);
+	return collision.length - 1;
 }
 
 function getCollisions() {
@@ -94,7 +132,11 @@ function getCollisions() {
 }
 
 function getCollision(id) {
+	return collision[id];
+}
 
+function removeCollection(id) {
+	delete collision[id];
 }
 
 // convert a cell sequential index to a cell vector
@@ -117,7 +159,7 @@ function indexToDisplay(index) {
 }
 
 function displayToVector(display) {
-	return createVector(display.x / cell_size, display.y / cell_size);
+	return createVector(Math.floor(display.x / cell_size), Math.floor(display.y / cell_size));
 }
 
 function displayToIndex(display) {
