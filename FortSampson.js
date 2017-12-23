@@ -2,7 +2,7 @@ var canvas; // this is the reference variable to the html Canvas element that di
 
 var levels; // Used as a collection of all levels
 var level; // the current level object
-var collision; // an x,y multidimensional array that contains bounding boxes for the cat to collide to
+var collision_manager;
 
 var cell_size; // height width of the cells in the level (80 default)
 var cell_x_count; // Count of total cells to display x axis
@@ -40,7 +40,6 @@ function setup() {
 
 	// Map Options
 	level = [];
-	collision = [];
 	levels = ["00000001" +
 			  "00000001" +
 			  "00000001" +
@@ -59,6 +58,8 @@ function setup() {
 
 	// add enums
 	setupEnums();
+
+	collision_manager = new CollisionManager();
 
 	// Add Cat Object, Player 1
 	cat1 = new Cat(createVector(0, 7), 1, 1);
@@ -115,30 +116,11 @@ function addLevel(levelID) {
 				// move to tile constructor
 				var loc = indexToDisplay(i);
 				loc.y = loc.y + cell_size - 23;
-				addCollision(new Collision('box', loc, createVector(cell_size, 23)));
+				collision_manager.addCollision(new Collision('box', loc, createVector(cell_size, 23)));
 			}
 		}
 	}
 }
-
-// Collision Functions: Todo add collisions
-function addCollision(c) {
-	collision.push(c);
-	return collision.length - 1;
-}
-
-function getCollisions() {
-	return collision;
-}
-
-function getCollision(id) {
-	return collision[id];
-}
-
-function removeCollection(id) {
-	delete collision[id];
-}
-
 // convert a cell sequential index to a cell vector
 function indexToVector(index) {
 	return createVector(floor((index) / cell_x_count), index - (floor(index / cell_x_count) * cell_x_count));
@@ -176,9 +158,7 @@ function draw() {
 		}
 	}
 
-	for (var i = 0; i < collision.length; i++) {
-		collision[i].display();
-	}
+	collision_manager.display();
 
 	cat1.update();
 	cat1.display();

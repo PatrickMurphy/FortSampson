@@ -85,10 +85,10 @@ class Cat {
 
 	checkCollisions(callback) {
 		// If hit collision box
-		for (var i = 0; i < collision.length; i++) {
-			if (collision[i].intersects(this.collision_box) !== false) {
+		for (var i = 0; i < collision_manager.getCollisions().length; i++) {
+			if (collision_manager.getCollision(i).intersects(this.collision_box) !== false) {
 				this.is_colliding = true;
-				callback(collision[i]);
+				callback(collision_manager.getCollision(i));
 			}
 		}
 		this.is_colliding = false;
