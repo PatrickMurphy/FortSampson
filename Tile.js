@@ -36,8 +36,7 @@ class Tile {
 
 		if (this.type == 0) { // TODO: Why is this a string?
 			noFill(); // air TODO: temp fix, just exit the function at this point?
-		} else if (this.type == 1 || this.type == 2) {
-			console.log('enter');
+		} else if (this.type == tile_types.grass.id) {
 			image(t1, this.displayVector.x, this.displayVector.y); // display cell background
 		}
 

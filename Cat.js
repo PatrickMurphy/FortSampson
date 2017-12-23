@@ -132,6 +132,8 @@ class Cat {
 						that.location.y -= 1;
 						if (that.getState() === states.movejump) {
 							that.setState(states.moving);
+						} else {
+							that.setState(states.idle);
 						}
 					}
 					//this.applyForce(createVector(0, -10));

@@ -110,8 +110,9 @@ function addLevel(levelID) {
 	var lev = levels[levelID].split('');
 	if (lev.length >= 100) {
 		for (var i = 0; i <= min(500, lev.length); i++) {
+			var cell_type = lev[i] == 2 ? 1 : lev[i];
 			var items_temp = lev[i] == 2 ? [item_types.rollingrock] : [];
-			level.push(new Tile(indexToVector(i), lev[i], i, items_temp));
+			level.push(new Tile(indexToVector(i), cell_type, i, items_temp));
 			if (lev[i] > 0) {
 				// move to tile constructor
 				var loc = indexToDisplay(i);
