@@ -15,7 +15,7 @@ var t4; // Image
 
 var cat1; // Cat the player object
 
-var DEBUG = 'col'; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = false; //'col'; // Debug flag, false is normal, true for bg, 'col' for collisions
 
 var states = {
 	idle: 0,

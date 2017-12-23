@@ -19,7 +19,7 @@ class Cat {
 		this.floor = this.default_floor;
 
 		// The mass of the cat, have type lookup
-		this.mass = 15;
+		this.mass = 10;
 
 		// Default Velocity: current velocity, collective from multiple updates
 		this.velocity = createVector(0, 0);
@@ -30,6 +30,8 @@ class Cat {
 		this.collision_box = new Collision('box', this.location, createVector(t2.width / 2, t2.height / 2));
 
 		this.state = states.idle;
+
+		this.is_colliding = false;
 	}
 
 	setState(state) {
@@ -69,19 +71,36 @@ class Cat {
 		}
 	}
 
-	// Update every frame
-	update() {
-		// If hit ground OR Gravity
-
+	checkCollisions() {
+		// If hit collision box
 		for (var i = 0; i < collision.length; i++) {
 			if (collision[i].intersects(this.collision_box)) {
-				this.velocity.x *= .1;
+				this.is_colliding = true;
+				return true;
 			}
 		}
+		this.is_colliding = false;
+		return false;
+	}
 
+	// Update every frame
+	update() {
 		this.handleInput();
-		if (this.state === states.jumping) {
-			this.applyForce(createVector(0, 1)); // gravity
+
+		if (this.state !== states.idle) {
+			this.applyForce(createVector(0, 1.4)); // gravity
+		}
+
+		if (this.is_colliding === false) {
+			if (this.checkCollisions()) {
+				//console.log('hit first');
+				this.velocity.mult(0);
+				this.acceleration.mult(0);
+				this.location.y -= 1;
+				//this.applyForce(createVector(0, -10));
+			}
+		} else if (this.checkCollisions()) {
+			this.velocity.x *= .2;
 		}
 
 
@@ -98,27 +117,35 @@ class Cat {
 
 	// Move Left Action, left arrow
 	moveLeft() {
-		this.applyForce(createVector(-10, 0));
+		this.applyForce(createVector(-2, 0));
 		this.dir = 1;
 	}
 
 	// Move Right Action, right arrow
 	moveRight() {
-		this.applyForce(createVector(10, 0));
+		this.applyForce(createVector(2, 0));
 		this.dir = 0;
 	}
 
 	// Jump action, up arrow TODO: Add Space button, wasd
 	moveUp() {
-		this.location.x + 5;
-		this.applyForce(createVector(0, 300));
+		this.location.y -= 5;
+		this.applyForce(createVector(0, -30));
 	}
 
+	// display the cat
 	display() {
 		// Display cat image, use ternary to decide what image based on direction
 		// TODO: use a function to determine image, enable animation
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
+
 		if (DEBUG === 'col') {
+			fill(color(255, 0, 0));
+			if (this.is_colliding) {
+				ellipse(25, 25, 15, 15);
+			}
+
+			text(Object.keys(states)[this.state], 16, 50);
 			this.collision_box.display();
 		}
 	}

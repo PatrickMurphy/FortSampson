@@ -24,10 +24,10 @@ class Collision {
 	}
 
 	intersects(collider) {
-		return this.location.x < this.location.x + this.sizes.x &&
-			this.location.x + this.sizes.x > this.location.x &&
-			this.location.y < this.location.y + this.sizes.y &&
-			this.sizes.y + this.location.y > this.location.y;
+		return collider.location.x < this.location.x + this.sizes.x &&
+			collider.location.x + collider.sizes.x > this.location.x &&
+			collider.location.y < this.location.y + this.sizes.y &&
+			collider.sizes.y + collider.location.y > this.location.y;
 	}
 
 	display() {
