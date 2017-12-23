@@ -1,8 +1,7 @@
 class Cat {
-
 	constructor(loc, typeID, i) {
 		// The display location of the cat
-		this.location = createVector(cell_size * (loc.x), (loc.y * cell_size));
+		this.location = vectorToDisplay(loc);
 
 		// The cat Type ID: only toby so far // Todo: add cats
 		this.type = typeID;
@@ -27,6 +26,8 @@ class Cat {
 
 		// Default Acceleration: current vectors applied
 		this.acceleration = new createVector(0, 0);
+
+		this.collision_box = new Collision('box',this.location,createVector(t2.width/2,t2.height/2));
 	}
 
 	// Apply vector force to cat physics
@@ -53,6 +54,8 @@ class Cat {
 			//this.acceleration.mult();
 			this.location.y = this.floor - 1;
 		}
+
+
 
 		// Friction ---------------------------------------
 		// if facing left
@@ -98,5 +101,8 @@ class Cat {
 		// Display cat image, use ternary to decide what image based on direction
 		// TODO: use a function to determine image, enable animation
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
+		if(DEBUG === 'col'){
+			this.collision_box.display();
+		}
 	}
 }

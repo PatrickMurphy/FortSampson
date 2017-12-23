@@ -33,7 +33,7 @@ class Tile {
 		}
 
 
-		if (DEBUG) {
+		if (DEBUG === true) {
 			fill(map(this.location.x, 0, cell_x_count, 0, 127.5) + map(this.location.y, 0, cell_y_count, 0, 127.5));
 			rect(cell_size * (this.location.x), this.location.y * cell_size, cell_size, cell_size);
 			fill(color(255, 0, 0));

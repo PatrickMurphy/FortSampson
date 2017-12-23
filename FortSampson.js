@@ -15,7 +15,7 @@ var t4;				// Image
 
 var cat1;			// Cat the player object
 
-var DEBUG = false;	// Debug flag
+var DEBUG = 'col';	// Debug flag, false is normal, true for bg, 'col' for collisions
 
 function preload() {
 	t1 = loadImage('data/tile1.png');
@@ -41,6 +41,7 @@ function setup() {
 
 	// Map Options
 	level = [];
+	collision = [];
 	levels = ["00000001" +
 			  "00000001" +
 			  "00000001" +
@@ -57,7 +58,6 @@ function setup() {
 			  "00000001" +
 			  "00000001"];
 	addLevel(0);
-	collision = [];
 }
 
 
@@ -67,6 +67,11 @@ function addLevel(levelID) {
 	if (lev.length >= 100) {
 		for (var i = 0; i <= min(500, lev.length); i++) {
 			level.push(new Tile(indexToVector(i), lev[i], i));
+			if(lev[i]>0){
+				var loc = indexToDisplay(i);
+				loc.y = loc.y + cell_size - 23;
+				addCollision(new Collision('box',loc,createVector(cell_size,23)));
+			}
 		}
 	}
 }
@@ -84,7 +89,7 @@ function getCollision(id) {
 
 }
 
-// convert a cell sequential index to a vector
+// convert a cell sequential index to a cell vector
 function indexToVector(index) {
 	return createVector(floor((index) / cell_x_count), index - (floor(index / cell_x_count) * cell_x_count));
 }
@@ -92,6 +97,23 @@ function indexToVector(index) {
 // convert a cell vector, xy location to an index
 function vectorToIndex(x, y) {
 	return x * cell_y_count + y;
+}
+
+// convert a cell vector to display vector
+function vectorToDisplay(vect){
+	return createVector(vect.x * cell_size, vect.y * cell_size);
+}
+
+function indexToDisplay(index){
+	return vectorToDisplay(indexToVector(index));
+}
+
+function displayToVector(display){
+	return createVector(display.x/cell_size, display.y/cell_size);
+}
+
+function displayToIndex(display){
+	return vectorToIndex(displayToVector(display));
 }
 
 // Draw the frame, the main game loop
@@ -103,6 +125,11 @@ function draw() {
 			level[vectorToIndex(x, y)].display();
 		}
 	}
+
+	for(var i = 0; i < collision.length; i++){
+		collision[i].display();
+	}
+
 	cat1.update();
 	cat1.display();
 }
