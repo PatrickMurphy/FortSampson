@@ -60,11 +60,19 @@ class Cat {
 		if (keyIsPressed === true) {
 			if (keyCode === LEFT_ARROW) {
 				this.moveLeft();
-				this.setState(states.moving);
+				if (this.getState() === states.jumping || this.getState() === states.movejump) {
+					this.setState(states.movejump);
+				} else {
+					this.setState(states.moving);
+				}
 			} else if (keyCode === RIGHT_ARROW) {
 				this.moveRight();
-				this.setState(states.moving);
-			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping)) {
+				if (this.getState() === states.jumping || this.getState() === states.movejump) {
+					this.setState(states.movejump);
+				} else {
+					this.setState(states.moving);
+				}
+			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping) && this.getState() !== states.movejump) {
 				this.setState(states.jumping);
 				this.moveUp();
 			}
@@ -99,6 +107,9 @@ class Cat {
 					that.velocity.mult(0);
 					that.acceleration.mult(0);
 					that.location.y -= 1;
+					if (that.getState() === states.movejump) {
+						that.setState(states.moving);
+					}
 					//this.applyForce(createVector(0, -10));
 				}
 			});
@@ -106,7 +117,7 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					that.velocity.x *= 0.9;
+					that.velocity.x *= 0.4;
 				}
 			});
 		}
@@ -154,6 +165,7 @@ class Cat {
 			}
 
 			text(Object.keys(states)[this.state], 16, 50);
+			text(Math.round(this.velocity.x) + ', ' + round(this.velocity.y), 16, 60);
 			this.collision_box.display();
 		}
 	}

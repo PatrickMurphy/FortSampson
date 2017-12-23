@@ -15,13 +15,14 @@ var t4; // Image
 
 var cat1; // Cat the player object
 
-var DEBUG = false; //'col'; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = false; //'col'; //false; // Debug flag, false is normal, true for bg, 'col' for collisions
 
 var states = {
 	idle: 0,
 	moving: 1,
 	jumping: 2,
-	dead: 3
+	movejump: 3,
+	dead: 4
 };
 
 function preload() {
