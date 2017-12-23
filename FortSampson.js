@@ -1,21 +1,28 @@
-var canvas; 		// this is the reference variable to the html Canvas element that displays the game
+var canvas; // this is the reference variable to the html Canvas element that displays the game
 
-var levels; 		// Used as a collection of all levels
-var level; 			// the current level object
-var collision; 		// an x,y multidimensional array that contains bounding boxes for the cat to collide to
+var levels; // Used as a collection of all levels
+var level; // the current level object
+var collision; // an x,y multidimensional array that contains bounding boxes for the cat to collide to
 
-var cell_size; 		// height width of the cells in the level (80 default)
-var cell_x_count;	// Count of total cells to display x axis
-var cell_y_count;	// count of total cells to display y axis
+var cell_size; // height width of the cells in the level (80 default)
+var cell_x_count; // Count of total cells to display x axis
+var cell_y_count; // count of total cells to display y axis
 
-var t1;				// Image
-var t2;				// Image
-var t3;				// Image
-var t4;				// Image
+var t1; // Image
+var t2; // Image
+var t3; // Image
+var t4; // Image
 
-var cat1;			// Cat the player object
+var cat1; // Cat the player object
 
-var DEBUG = 'col';	// Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = 'col'; // Debug flag, false is normal, true for bg, 'col' for collisions
+
+var states = {
+	idle: 0,
+	moving: 1,
+	jumping: 2,
+	dead: 3
+};
 
 function preload() {
 	t1 = loadImage('data/tile1.png');
@@ -67,10 +74,10 @@ function addLevel(levelID) {
 	if (lev.length >= 100) {
 		for (var i = 0; i <= min(500, lev.length); i++) {
 			level.push(new Tile(indexToVector(i), lev[i], i));
-			if(lev[i]>0){
+			if (lev[i] > 0) {
 				var loc = indexToDisplay(i);
 				loc.y = loc.y + cell_size - 23;
-				addCollision(new Collision('box',loc,createVector(cell_size,23)));
+				addCollision(new Collision('box', loc, createVector(cell_size, 23)));
 			}
 		}
 	}
@@ -100,19 +107,19 @@ function vectorToIndex(x, y) {
 }
 
 // convert a cell vector to display vector
-function vectorToDisplay(vect){
+function vectorToDisplay(vect) {
 	return createVector(vect.x * cell_size, vect.y * cell_size);
 }
 
-function indexToDisplay(index){
+function indexToDisplay(index) {
 	return vectorToDisplay(indexToVector(index));
 }
 
-function displayToVector(display){
-	return createVector(display.x/cell_size, display.y/cell_size);
+function displayToVector(display) {
+	return createVector(display.x / cell_size, display.y / cell_size);
 }
 
-function displayToIndex(display){
+function displayToIndex(display) {
 	return vectorToIndex(displayToVector(display));
 }
 
@@ -126,22 +133,10 @@ function draw() {
 		}
 	}
 
-	for(var i = 0; i < collision.length; i++){
+	for (var i = 0; i < collision.length; i++) {
 		collision[i].display();
 	}
 
 	cat1.update();
 	cat1.display();
-}
-
-
-// Listen for key events
-function keyPressed() {
-	if (keyCode === LEFT_ARROW) {
-		cat1.moveLeft();
-	} else if (keyCode === RIGHT_ARROW) {
-		cat1.moveRight();
-	} else if (keyCode === UP_ARROW) {
-		cat1.moveUp();
-	}
 }

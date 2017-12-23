@@ -27,7 +27,17 @@ class Cat {
 		// Default Acceleration: current vectors applied
 		this.acceleration = new createVector(0, 0);
 
-		this.collision_box = new Collision('box',this.location,createVector(t2.width/2,t2.height/2));
+		this.collision_box = new Collision('box', this.location, createVector(t2.width / 2, t2.height / 2));
+
+		this.state = states.idle;
+	}
+
+	setState(state) {
+		this.state = state;
+	}
+
+	getState() {
+		return this.state;
 	}
 
 	// Apply vector force to cat physics
@@ -44,30 +54,36 @@ class Cat {
 		return (this.location.x < width + this.mass && this.location.x > -this.mass && this.location.y < height + this.mass && this.location.y > -this.mass);
 	}
 
+	handleInput() {
+		if (keyIsPressed === true) {
+			if (keyCode === LEFT_ARROW) {
+				this.moveLeft();
+				this.setState(states.moving);
+			} else if (keyCode === RIGHT_ARROW) {
+				this.moveRight();
+				this.setState(states.moving);
+			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping)) {
+				this.setState(states.jumping);
+				this.moveUp();
+			}
+		}
+	}
+
 	// Update every frame
 	update() {
 		// If hit ground OR Gravity
-		if (this.location.y < this.floor) {
-			this.applyForce(createVector(0, 1));
-		} else {
-			//this.velocity.mult(.2);
-			//this.acceleration.mult();
-			this.location.y = this.floor - 1;
+
+		for (var i = 0; i < collision.length; i++) {
+			if (collision[i].intersects(this.collision_box)) {
+				this.velocity.x *= .1;
+			}
 		}
 
-
-
-		// Friction ---------------------------------------
-		// if facing left
-		if (this.dir == 1 && this.location.y >= this.floor) {
-			this.applyForce(createVector(.1, 0));
+		this.handleInput();
+		if (this.state === states.jumping) {
+			this.applyForce(createVector(0, 1)); // gravity
 		}
 
-		// if facing right
-		if (this.dir == 0 && this.location.y >= this.floor) {
-			this.applyForce(createVector(-.1, 0));
-		}
-		// End --------------------------------------------
 
 		// Update physics
 		this.velocity.add(this.acceleration);
@@ -82,26 +98,27 @@ class Cat {
 
 	// Move Left Action, left arrow
 	moveLeft() {
-		this.applyForce(createVector(-3, 0));
+		this.applyForce(createVector(-10, 0));
 		this.dir = 1;
 	}
 
 	// Move Right Action, right arrow
 	moveRight() {
-		this.applyForce(createVector(3, 0));
+		this.applyForce(createVector(10, 0));
 		this.dir = 0;
 	}
 
 	// Jump action, up arrow TODO: Add Space button, wasd
 	moveUp() {
-		this.applyForce(createVector(0, -25));
+		this.location.x + 5;
+		this.applyForce(createVector(0, 300));
 	}
 
 	display() {
 		// Display cat image, use ternary to decide what image based on direction
 		// TODO: use a function to determine image, enable animation
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
-		if(DEBUG === 'col'){
+		if (DEBUG === 'col') {
 			this.collision_box.display();
 		}
 	}
