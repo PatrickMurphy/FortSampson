@@ -9,6 +9,10 @@ class Collision {
 		// TODO: the case statment to assign collisions and objects based on type. json object with properties
 	}
 
+	copy(type) {
+		return new Collision(type, this.location.copy(), this.sizes.copy());
+	}
+
 	intersects(collider) {
 		return collider.location.x < this.location.x + this.sizes.x &&
 			collider.location.x + collider.sizes.x > this.location.x &&

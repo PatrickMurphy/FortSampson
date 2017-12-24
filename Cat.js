@@ -40,6 +40,9 @@ class Cat {
 
 	setState(state) {
 		this.state = state;
+		if (this.state === states.idle) {
+			this.is_colliding = true;
+		}
 	}
 
 	getState() {
@@ -85,19 +88,24 @@ class Cat {
 		} else if (this.getState() !== states.jumping && this.getState() !== states.movejump) {
 			this.setState(states.idle);
 		}
-
+		keyCode = undefined;
 	}
 
 	checkCollisions(callback) {
 		// If hit collision box
+		var ccd = this.collision_box.copy('temp_ccd');
+		var temp_vel = this.velocity.copy();
+		temp_vel.add(this.acceleration.copy());
+		ccd.location.add(temp_vel);
 		for (var i = 0; i < collision_manager.getCollisions().length; i++) {
 			if (typeof collision_manager.getCollision(i) !== 'undefined') {
-				if (collision_manager.getCollision(i).intersects(this.collision_box) !== false) {
+				if (collision_manager.getCollision(i).intersects(ccd) !== false) {
 					this.is_colliding = true;
 					callback(collision_manager.getCollision(i));
 				}
 			}
 		}
+		//this.setState(states.jumping);
 		this.is_colliding = false;
 		callback(false);
 	}
@@ -122,16 +130,20 @@ class Cat {
 			this.applyForce(createVector(0, 1.4)); // gravity
 		}
 
+
+		//this.applyForce(createVector(0, 1.4)); // gravity
+
 		if (this.is_colliding === false) {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
+					//console.log(collider.type);
 					if (collider.type === item_types.rollingrock.string_id) {
 						that.collectItem(collider);
 					} else {
-						that.velocity.mult(0);
+						that.velocity.y = 0;
 						that.acceleration.mult(0);
-						that.location.y -= 1;
+						//that.location.y -= 1;
 						if (that.getState() === states.movejump) {
 							that.setState(states.moving);
 						} else if (that.getState() !== states.moving) {
@@ -148,7 +160,8 @@ class Cat {
 					if (collider.type === item_types.rollingrock.string_id) {
 						that.collectItem(collider);
 					} else if (!keyIsPressed) {
-						that.velocity.x *= 0.5;
+						//that.velocity.limit(2);
+						that.velocity.x *= 0.35;
 					}
 				}
 			});
@@ -168,13 +181,13 @@ class Cat {
 
 	// Move Left Action, left arrow
 	moveLeft() {
-		this.applyForce(createVector(-2, 0));
+		this.applyForce(createVector(-3, 0));
 		this.dir = 1;
 	}
 
 	// Move Right Action, right arrow
 	moveRight() {
-		this.applyForce(createVector(2, 0));
+		this.applyForce(createVector(3, 0));
 		this.dir = 0;
 	}
 
