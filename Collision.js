@@ -1,8 +1,9 @@
 class Collision {
-	constructor(typeID, loc, sizes, parent) {
+	constructor(typeID, type2, loc, sizes, parent) {
 		this.location = loc;
 		this.cellLocation = displayToVector(loc);
 		this.type = typeID; // Type id, refer to comment above
+		this.collision_type = type2;
 		this.sizes = sizes; // the unique index count of this tile
 		this.id = 0;
 		this.parent = parent || undefined;
@@ -10,7 +11,7 @@ class Collision {
 	}
 
 	copy(type) {
-		return new Collision(type, this.location.copy(), this.sizes.copy());
+		return new Collision(type, this.collision_type, this.location.copy(), this.sizes.copy());
 	}
 
 	intersects(collider) {

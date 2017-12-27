@@ -29,7 +29,7 @@ class Cat {
 		// Default Acceleration: current vectors applied
 		this.acceleration = new createVector(0, 0);
 
-		this.collision_box = new Collision('box', this.location, createVector(t2.width / 2, t2.height / 2));
+		this.collision_box = new Collision('box', collision_types.cat, this.location, createVector(t2.width / 2, t2.height / 2));
 
 		this.state = states.idle;
 

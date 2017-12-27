@@ -18,7 +18,7 @@ var cat1; // Cat the player object
 
 var DEBUG = false; // Debug flag, false is normal, true for bg, 'col' for collisions
 
-var item_types, item_names, tile_names, tile_types, states;
+var item_types, item_names, tile_names, tile_types, states, collision_directions, collision_types;
 var firstFrame = true;
 
 function preload() {
@@ -73,6 +73,7 @@ function setup() {
 }
 
 function setupEnums() {
+
 	states = {
 		idle: 0,
 		moving: 1,
@@ -106,6 +107,42 @@ function setupEnums() {
 	};
 	tile_names = ['air', 'grass'];
 
+	collision_directions = {
+		none: 0,
+		top: 1,
+		bottom: 2,
+		top_bottom: 3, // top plus bottom
+		sides: 4,
+		sides_top: 5, // sides + top
+		sides_bottom: 6,
+		all: 7 // top+bottom+sides=7
+	};
+	collision_types = {
+		floor: {
+			id: 0,
+			isHardBody: true,
+			direction: collision_directions.top,
+			stationary: true
+		},
+		item: {
+			id: 1,
+			isHardBody: false,
+			direction: collision_directions.all,
+			stationary: true
+		},
+		path: {
+			id: 2,
+			isHardBody: false,
+			direction: collision_directions.all,
+			stationary: true
+		},
+		cat: {
+			id: 3,
+			isHardBody: true,
+			direction: collision_directions.all,
+			stationary: false
+		}
+	}
 }
 
 
@@ -132,7 +169,7 @@ function addLevel(levelID) {
 				// move to tile constructor
 				var loc = indexToDisplay(i);
 				loc.y = loc.y + cell_size - 23;
-				collision_manager.addCollision(new Collision('box', loc, createVector(cell_size, 23)));
+				collision_manager.addCollision(new Collision('box', collision_types.floor, loc, createVector(cell_size, 23)));
 			}
 		}
 	}
