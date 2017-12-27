@@ -16,10 +16,17 @@ var bg;
 
 var cat1; // Cat the player object
 
-var DEBUG = false; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = 'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
 
 var item_types, item_names, tile_names, tile_types, states, collision_directions, collision_types;
 var firstFrame = true;
+
+var level_editor_tool = 'collisions'; // items, collisions, paths
+var level_editor_points = {
+	items: [],
+	paths: [],
+	collisions: []
+};
 
 function preload() {
 	//t1 = loadImage('data/tile1.png');
@@ -201,6 +208,15 @@ function displayToIndex(display) {
 	return vectorToIndex(displayToVector(display));
 }
 
+function mousePressed() {
+	if (DEBUG === 'levelEditor') {
+		console.log(mouseX, mouseY);
+		if (level_editor_tool === 'collisions') {
+			level_editor_points.collisions.push(createVector(mouseX, mouseY));
+		}
+	}
+}
+
 // Draw the frame, the main game loop
 function draw() {
 	background(color(191, 248, 255));
@@ -219,4 +235,14 @@ function draw() {
 	cat1.update();
 	cat1.display();
 	firstFrame = false;
+
+	if (DEBUG === 'levelEditor') {
+		if (level_editor_points.collisions.length >= 2) {
+			for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
+				if (typeof level_editor_points.collisions[i + 1] !== 'undefined') {
+					rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
+				}
+			}
+		}
+	}
 }
