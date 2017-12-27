@@ -46,6 +46,7 @@ class Tile {
 			rect(cell_size * (this.location.x), this.location.y * cell_size, cell_size, cell_size);
 			fill(color(255, 0, 0));
 			text(vectorToIndex(this.location.x, this.location.y) + "," + this.index, (this.displayVector.x) + cell_size / 2, (this.location.y * cell_size) + cell_size / 2);
+			text(this.location.x + ', ' + this.location.y + ' | ' + vectorToIndex(this.location.x, this.location.y), (this.displayVector.x - 15) + cell_size / 2, ((this.location.y * cell_size) + cell_size / 2) + 12);
 		}
 	}
 }

@@ -12,6 +12,7 @@ var t1; // Image
 var t2; // Image
 var t3; // Image
 var t4; // Image
+var bg;
 
 var cat1; // Cat the player object
 
@@ -21,10 +22,12 @@ var item_types, item_names, tile_names, tile_types, states;
 var firstFrame = true;
 
 function preload() {
-	t1 = loadImage('data/tile1.png');
+	//t1 = loadImage('data/tile1.png');
+	t1 = createImage();
 	t2 = loadImage('data/toby.png');
 	t3 = loadImage('data/tobyr.png');
 	t4 = loadImage('data/rollingrock.png');
+	bg = loadImage('data/Level1Outside.svg');
 }
 
 function setup() {
@@ -36,19 +39,19 @@ function setup() {
 	cell_size = 80;
 	cell_x_count = ceil(width / cell_size);
 	cell_y_count = ceil(height / cell_size);
-	cell_x_count = 8; // zero based less than equal = 10, (0,1,2,3,4,5,6,7,8)
-	cell_y_count = 9; // zero based equal + 1
+	cell_x_count = 8; // zero based less than equal = 10, (0,1,2,3,4,5,6,7,8,9)
+	cell_y_count = 9; // zero based equal + 1 ()
 
 	// Map Options
 	level = [];
 	levels = ["00000001" +
 			  "00000001" +
 			  "00000001" +
-			  "00000021" +
-			  "00000201" +
-			  "00000201" +
-			  "00000102" +
-			  "00000201" +
+			  "00000001" +
+			  "00000001" +
+			  "00000001" +
+			  "00000002" +
+			  "00000001" +
 			  "00000002" +
 			  "00000001" +
 			  "00000002" +
@@ -108,12 +111,23 @@ function setupEnums() {
 
 // Add a level from an ID
 function addLevel(levelID) {
+	// Split level string to char array
 	var lev = levels[levelID].split('');
-	if (lev.length >= 100) {
-		for (var i = 0; i <= min(500, lev.length); i++) {
+
+	// if we have enough to display
+	if (lev.length >= 80) {
+
+		// For every char in the lvl array
+		for (var i = 0; i <= lev.length; i++) {
+
+			// Determine cell type & items
 			var cell_type = lev[i] == 2 ? 1 : lev[i];
 			var items_temp = lev[i] == 2 ? [item_types.rollingrock] : [];
+
+			// Add this tile
 			level.push(new Tile(indexToVector(i), cell_type, i, items_temp));
+
+			// if not air add collisions
 			if (lev[i] > 0) {
 				// move to tile constructor
 				var loc = indexToDisplay(i);
@@ -153,9 +167,10 @@ function displayToIndex(display) {
 // Draw the frame, the main game loop
 function draw() {
 	background(color(191, 248, 255));
+	image(bg, 0, 0);
 	noStroke();
 	for (var x = 0; x <= cell_x_count; x++) {
-		for (var y = 0; y < cell_y_count + 1; y++) {
+		for (var y = 0; y <= cell_y_count; y++) {
 			level[vectorToIndex(x, y)].display();
 			if (firstFrame)
 				console.log(x, y, vectorToIndex(x, y));
