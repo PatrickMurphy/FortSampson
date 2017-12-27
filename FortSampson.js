@@ -67,7 +67,7 @@ function setup() {
 			  "00000001" +
 			  "00000001"];
 
-	// add enums
+	// add enums from file
 	setupEnums();
 
 	collision_manager = new CollisionManager();
@@ -78,26 +78,6 @@ function setup() {
 	// setup level
 	addLevel(0);
 }
-
-function setupEnums() {
-	item_types = {
-		rollingrock: {
-			id: 0,
-			string_id: 'rollingrock',
-			title: 'Rolling Rock',
-			image: t4,
-			offset: createVector(30, 0)
-		},
-		path: {
-			id: 1,
-			string_id: 'path',
-			title: 'path',
-			image: t4,
-			offset: createVector(15, 0)
-		}
-	};
-}
-
 
 // Add a level from an ID
 function addLevel(levelID) {
@@ -126,32 +106,6 @@ function addLevel(levelID) {
 			}
 		}
 	}
-}
-// convert a cell sequential index to a cell vector
-function indexToVector(index) {
-	return createVector(floor((index) / cell_x_count), index - (floor(index / cell_x_count) * cell_x_count));
-}
-
-// convert a cell vector, xy location to an index
-function vectorToIndex(x, y) {
-	return x * cell_y_count + y;
-}
-
-// convert a cell vector to display vector
-function vectorToDisplay(vect) {
-	return createVector(vect.x * cell_size, vect.y * cell_size);
-}
-
-function indexToDisplay(index) {
-	return vectorToDisplay(indexToVector(index));
-}
-
-function displayToVector(display) {
-	return createVector(Math.floor(display.x / cell_size), Math.floor(display.y / cell_size));
-}
-
-function displayToIndex(display) {
-	return vectorToIndex(displayToVector(display));
 }
 
 function mousePressed() {
