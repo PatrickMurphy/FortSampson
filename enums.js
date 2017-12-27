@@ -141,6 +141,6 @@ level_properties = {
 			{
 				x: 229,
 				y: 425
-			}];
+			}]
 	}
 }

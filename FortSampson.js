@@ -93,7 +93,7 @@ function setupEnums() {
 			string_id: 'path',
 			title: 'path',
 			image: t4,
-			offset: createVector(15, 0);
+			offset: createVector(15, 0)
 		}
 	};
 }
