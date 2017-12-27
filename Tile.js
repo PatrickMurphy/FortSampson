@@ -6,7 +6,6 @@ Tile ID Reference
 Tile #      Collisions	Objects		Name				Description
 	0		No			Yes			Air                 The basic blank tile. TODO: should these be objects? or default to background
 	1		Yes			Yes			Grass Platform 1    The basic platform, dirt with grass, flat, can float or be the lowest ground.
-	2		Yes			Yes			Grass Platform RR   This is #1, with a floating rolling rock. TODO: Pass an array of object options if accepts objects instead of repetitive tiles
 
 -----------------
 Tile Class

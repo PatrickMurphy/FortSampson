@@ -11,7 +11,7 @@ class Collision {
 	}
 
 	copy(type) {
-		return new Collision(type, this.collision_type, this.location.copy(), this.sizes.copy());
+		return new Collision(this.type, this.collision_type, this.location.copy(), this.sizes.copy(), this.parent);
 	}
 
 	intersects(collider) {

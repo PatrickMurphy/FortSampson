@@ -16,9 +16,9 @@ var bg;
 
 var cat1; // Cat the player object
 
-var DEBUG = 'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = false; //'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
 
-var item_types, item_names, tile_names, tile_types, states, collision_directions, collision_types;
+var item_types;
 var firstFrame = true;
 
 var level_editor_tool = 'collisions'; // items, collisions, paths
@@ -33,7 +33,7 @@ function preload() {
 	t1 = createImage();
 	t2 = loadImage('data/toby.png');
 	t3 = loadImage('data/tobyr.png');
-	t4 = loadImage('data/rollingrock.png');
+	t4 = loadImage('data/rollingrock.svg');
 	bg = loadImage('data/Level1Outside.svg');
 }
 
@@ -80,14 +80,6 @@ function setup() {
 }
 
 function setupEnums() {
-
-	states = {
-		idle: 0,
-		moving: 1,
-		jumping: 2,
-		movejump: 3,
-		dead: 4
-	};
 	item_types = {
 		rollingrock: {
 			id: 0,
@@ -95,61 +87,15 @@ function setupEnums() {
 			title: 'Rolling Rock',
 			image: t4,
 			offset: createVector(30, 0)
-		}
-	}
-	item_names = ['rollingrock'];
-
-
-	tile_types = {
-		air: {
-			id: 0,
-			collisions: false,
-			objects: true
-		},
-		grass: {
-			id: 1,
-			collisions: true,
-			objects: true
-		}
-	};
-	tile_names = ['air', 'grass'];
-
-	collision_directions = {
-		none: 0,
-		top: 1,
-		bottom: 2,
-		top_bottom: 3, // top plus bottom
-		sides: 4,
-		sides_top: 5, // sides + top
-		sides_bottom: 6,
-		all: 7 // top+bottom+sides=7
-	};
-	collision_types = {
-		floor: {
-			id: 0,
-			isHardBody: true,
-			direction: collision_directions.top,
-			stationary: true
-		},
-		item: {
-			id: 1,
-			isHardBody: false,
-			direction: collision_directions.all,
-			stationary: true
 		},
 		path: {
-			id: 2,
-			isHardBody: false,
-			direction: collision_directions.all,
-			stationary: true
-		},
-		cat: {
-			id: 3,
-			isHardBody: true,
-			direction: collision_directions.all,
-			stationary: false
+			id: 1,
+			string_id: 'path',
+			title: 'path',
+			image: t4,
+			offset: createVector(15, 0);
 		}
-	}
+	};
 }
 
 
@@ -225,8 +171,6 @@ function draw() {
 	for (var x = 0; x <= cell_x_count; x++) {
 		for (var y = 0; y <= cell_y_count; y++) {
 			level[vectorToIndex(x, y)].display();
-			if (firstFrame)
-				console.log(x, y, vectorToIndex(x, y));
 		}
 	}
 

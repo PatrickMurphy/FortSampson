@@ -1,5 +1,5 @@
 class CollisionManager {
-	constructor(type, loc) {
+	constructor() {
 		this.collision_collection = [];
 	}
 
