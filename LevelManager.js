@@ -1,17 +1,15 @@
 class LevelManager {
-	constructor(typeID, parent) {
-		this.type = typeID; // Type id, refer to comment above
-		this.parent = parent || undefined;
+	constructor() {
 		this.level_collection = [];
-	}
-
-	copy(type) {
-		return new LevelManager(this.type, this.parent);
+		this.current_id = undefined;
 	}
 
 	addLevel(level) {
 		level.id = this.level_collection.length;
 		this.level_collection.push(level);
+		if (typeof this.current_id === 'undefined') {
+			this.current_id = level.id;
+		}
 		return level.id;
 	}
 
@@ -25,5 +23,11 @@ class LevelManager {
 
 	removeLevel(id) {
 		delete this.level_collection[id];
+	}
+
+	display() {
+		if (typeof this.current_id !== 'undefined') {
+			this.level_collection[this.current_id].display();
+		}
 	}
 }

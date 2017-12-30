@@ -8,14 +8,14 @@ function setupEnums() {
 			string_id: 'rollingrock',
 			title: 'Rolling Rock',
 			image: t4,
-			offset: createVector(30, 0)
+			offset: createVector(0, -20)
 		},
 		path: {
 			id: 1,
 			string_id: 'path',
 			title: 'path',
 			image: t4,
-			offset: createVector(15, 0)
+			offset: createVector(0, -15)
 		}
 	};
 
@@ -89,6 +89,61 @@ function setupEnums() {
 	level_properties = {
 		FortSampsonOutside: {
 			hasBG: true,
+			title: 'FortSampsonOutside',
+			items: [{
+					x: 685,
+					y: 585,
+					type: item_types.rollingrock
+			}, {
+					x: 510,
+					y: 585,
+					type: item_types.rollingrock
+			},
+				{
+					x: 530,
+					y: 328,
+					type: item_types.rollingrock
+				}, {
+					x: 670,
+					y: 328,
+					type: item_types.rollingrock
+				},
+				{
+					x: 140,
+					y: 520,
+					type: item_types.rollingrock
+				},
+				{
+					x: 195,
+					y: 520,
+					type: item_types.rollingrock
+				},
+				{
+					x: 75,
+					y: 265,
+					type: item_types.rollingrock
+				},
+				{
+					x: 185,
+					y: 265,
+					type: item_types.rollingrock
+				},
+				{
+					x: 265,
+					y: 265,
+					type: item_types.rollingrock
+				},
+				{
+					x: 375,
+					y: 265,
+					type: item_types.rollingrock
+				},
+				{
+					x: 149,
+					y: 210,
+					type: item_types.rollingrock
+				}],
+			paths: [],
 			collisions: [{
 					x: 40,
 					y: 589
@@ -160,7 +215,64 @@ function setupEnums() {
 				{
 					x: 229,
 					y: 425
-			}]
+			},
+				{
+					x: 0,
+					y: 615
+				}, {
+					x: 800,
+					y: 625
+				}]
+		},
+		FortSampsonInside_LivingRoom: {
+			hasBG: true,
+			title: 'FortSampsonInside_LivingRoom',
+			items: [],
+			paths: [],
+			collisions: [
+				{
+					x: 25,
+					y: 572
+				}, {
+					x: 770,
+					y: 567
+				}, {
+					x: 768,
+					y: 7
+				}, {
+					x: 799,
+					y: 637
+				}, {
+					x: -1,
+					y: 638
+				}, {
+					x: 26,
+					y: 27
+				}, {
+					x: 98,
+					y: 458
+				}, {
+					x: 205,
+					y: 466
+				}, {
+					x: 334,
+					y: 455
+				}, {
+					x: 608,
+					y: 452
+				}, {
+					x: 369,
+					y: 515
+				}, {
+					x: 582,
+					y: 519
+				}, {
+					x: 453,
+					y: 369
+				}, {
+					x: 652,
+					y: 375
+				}]
 		}
 	}
 }

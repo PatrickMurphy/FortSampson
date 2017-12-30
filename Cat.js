@@ -1,9 +1,11 @@
 class Cat {
-	constructor(loc, typeID, i) {
+	constructor(loc, typeID, i, collision_man) {
 		// The display location of the cat
 		this.location = vectorToDisplay(loc);
 
 		this.cellLocation = loc;
+
+		this.collision_man = collision_man;
 
 		// The cat Type ID: only toby so far // Todo: add cats
 		this.type = typeID;
@@ -97,11 +99,11 @@ class Cat {
 		var temp_vel = this.velocity.copy();
 		temp_vel.add(this.acceleration.copy());
 		ccd.location.add(temp_vel);
-		for (var i = 0; i < collision_manager.getCollisions().length; i++) {
-			if (typeof collision_manager.getCollision(i) !== 'undefined') {
-				if (collision_manager.getCollision(i).intersects(ccd) !== false) {
+		for (var i = 0; i < this.collision_man.getCollisions().length; i++) {
+			if (typeof this.collision_man.getCollision(i) !== 'undefined') {
+				if (this.collision_man.getCollision(i).intersects(ccd) !== false) {
 					this.is_colliding = true;
-					callback(collision_manager.getCollision(i));
+					callback(this.collision_man.getCollision(i));
 				}
 			}
 		}
@@ -118,7 +120,7 @@ class Cat {
 		}
 
 		item.parent.collected = true;
-		collision_manager.removeCollision(item.id);
+		this.collision_man.removeCollision(item.id);
 	}
 
 	// Update every frame
@@ -133,7 +135,7 @@ class Cat {
 
 		//this.applyForce(createVector(0, 1.4)); // gravity
 
-		if (this.is_colliding === false) {
+		if (this.is_colliding === false && this.velocity.y > 0) {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
@@ -194,7 +196,7 @@ class Cat {
 	// Jump action, up arrow TODO: Add Space button, wasd
 	moveUp() {
 		//this.location.y -= 5;
-		this.applyForce(createVector(0, -30));
+		this.applyForce(createVector(0, -45));
 	}
 
 	// display the cat
@@ -204,6 +206,9 @@ class Cat {
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
 		fill(0, 0, 255);
 		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
+		if (DEBUG !== false) {
+			ellipse(this.location.x, this.location.y, 3, 3);
+		}
 		if (DEBUG === 'col') {
 			fill(color(255, 0, 0));
 			if (this.is_colliding) {

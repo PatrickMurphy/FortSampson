@@ -48,14 +48,14 @@ class Collision {
 		}
 
 		if (col1.collision_type.direction === collision_directions.top) {
-			if (col1.location.y < col2.location.y) {
+			if (col1.location.y < col2.location.y - col2.sizes.y) {
 				// col2 is below col1
 				return false;
 			}
 		} else if (col1.collision_type.direction === collision_directions.bottom) {
-			if (col1.location.y > col2.location.y) {
+			if (col1.location.y + col1.sizes.y > col2.location.y + col2.sizes.y) {
 				// col2 is above col1
-				return false
+				return false;
 			}
 		}
 

@@ -1,6 +1,7 @@
 var canvas; // this is the reference variable to the html Canvas element that displays the game
 
-var levels; // Used as a collection of all levels
+var levels_strings; // Used as a collection of all levels
+var levels;
 var level; // the current level object
 var collision_manager;
 
@@ -16,10 +17,9 @@ var bg;
 
 var cat1; // Cat the player object
 
-var DEBUG = false; //'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = 'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
 
 var item_types;
-var firstFrame = true;
 
 var level_editor_tool = 'collisions'; // items, collisions, paths
 var level_editor_points = {
@@ -51,7 +51,8 @@ function setup() {
 
 	// Map Options
 	level = [];
-	levels = ["00000001" +
+	levels = new LevelManager();
+	levels_strings = ["00000001" +
 			  "00000001" +
 			  "00000001" +
 			  "00000001" +
@@ -73,16 +74,18 @@ function setup() {
 	collision_manager = new CollisionManager();
 
 	// Add Cat Object, Player 1
-	cat1 = new Cat(createVector(0, 7), 1, 1);
+	//cat1 = new Cat(createVector(0, 7), 1, 1, collision_manager);
 
 	// setup level
-	addLevel(0);
+	//addLevel(0);
+
+	levels.addLevel(new Level(level_types.svg, {}, level_properties.FortSampsonInside_LivingRoom.title));
 }
 
 // Add a level from an ID
 function addLevel(levelID) {
 	// Split level string to char array
-	var lev = levels[levelID].split('');
+	var lev = levels_strings[levelID].split('');
 
 	// if we have enough to display
 	if (lev.length >= 80) {
@@ -110,7 +113,11 @@ function addLevel(levelID) {
 
 function mousePressed() {
 	if (DEBUG === 'levelEditor') {
+		var tools = ['collisions', 'paths', 'items'];
 		console.log(mouseX, mouseY);
+		if (mouseButton === RIGHT) {
+			level_editor_tool = tools[(tools.indexOf(level_editor_tool) + 1) % tools.length];
+		}
 		if (level_editor_tool === 'collisions') {
 			level_editor_points.collisions.push(createVector(mouseX, mouseY));
 		}
@@ -119,23 +126,11 @@ function mousePressed() {
 
 // Draw the frame, the main game loop
 function draw() {
-	background(color(191, 248, 255));
-	image(bg, 0, 0);
-	noStroke();
-	for (var x = 0; x <= cell_x_count; x++) {
-		for (var y = 0; y <= cell_y_count; y++) {
-			level[vectorToIndex(x, y)].display();
-		}
-	}
-
-	collision_manager.display();
-
-	cat1.update();
-	cat1.display();
-	firstFrame = false;
+	levels.display();
 
 	if (DEBUG === 'levelEditor') {
 		if (level_editor_points.collisions.length >= 2) {
+			text(level_editor_tool, 5, 100);
 			for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
 				if (typeof level_editor_points.collisions[i + 1] !== 'undefined') {
 					rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
