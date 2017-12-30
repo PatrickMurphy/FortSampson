@@ -100,7 +100,7 @@ class Cat {
 		temp_vel.add(this.acceleration.copy());
 		ccd.location.add(temp_vel);
 		for (var i = 0; i < this.collision_man.getCollisions().length; i++) {
-			if (typeof this.collision_man.getCollision(i) !== 'undefined') {
+			if (isDefined(this.collision_man.getCollision(i))) {
 				if (this.collision_man.getCollision(i).intersects(ccd) !== false) {
 					this.is_colliding = true;
 					callback(this.collision_man.getCollision(i));

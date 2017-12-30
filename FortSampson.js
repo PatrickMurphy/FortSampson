@@ -71,7 +71,7 @@ function drawLevelEditor() {
 	text(level_editor_tool + ' Right Click to change', 5, 100); // display current tool
 	if (level_editor_points.collisions.length >= 2) {
 		for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
-			if (typeof level_editor_points.collisions[i + 1] !== 'undefined') {
+			if (isDefined(level_editor_points.collisions[i + 1])) {
 				rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
 			}
 		}

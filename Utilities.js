@@ -32,3 +32,7 @@ function printPoints() {
 	}
 	console.log(string_out);
 }
+
+function isDefined(testVariable) {
+	return (typeof testVariable !== 'undefined'); // if the variable is not undefined return true
+}

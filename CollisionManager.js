@@ -24,7 +24,7 @@ class CollisionManager {
 
 	display() {
 		for (var i = 0; i < this.collision_collection.length; i++) {
-			if (typeof this.collision_collection[i] !== 'undefined')
+			if (isDefined(this.collision_collection[i]))
 				this.collision_collection[i].display();
 		}
 	}

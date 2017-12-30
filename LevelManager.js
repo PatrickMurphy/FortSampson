@@ -8,7 +8,7 @@ class LevelManager {
 		level.id = this.level_collection.length;
 		setCurrentBool = setCurrentBool || false;
 		this.level_collection.push(level);
-		if (typeof this.current_id === 'undefined' || setCurrentBool) {
+		if (!isDefined(this.current_id) || setCurrentBool) {
 			this.current_id = level.id;
 		}
 		return level.id;
@@ -35,7 +35,7 @@ class LevelManager {
 	}
 
 	display() {
-		if (typeof this.current_id !== 'undefined') {
+		if (isDefined(this.current_id)) {
 			this.level_collection[this.current_id].display();
 		}
 	}

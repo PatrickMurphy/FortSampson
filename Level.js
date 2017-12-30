@@ -55,7 +55,7 @@ class Level {
 
 		if (level_properties[level_title].collisions.length >= 2) {
 			for (var i = 0; i < level_properties[level_title].collisions.length; i += 2) {
-				if (typeof level_properties[level_title].collisions[i + 1] !== 'undefined') {
+				if (isDefined(level_properties[level_title].collisions[i + 1])) {
 					var sizes = createVector(level_properties[level_title].collisions[i + 1].x - level_properties[level_title].collisions[i].x, level_properties[level_title].collisions[i + 1].y - level_properties[level_title].collisions[i].y);
 					var loc = createVector(level_properties[level_title].collisions[i].x, level_properties[level_title].collisions[i].y);
 					this.collisions.addCollision(new Collision('box', collision_types.floor, loc, sizes));
