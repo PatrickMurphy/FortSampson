@@ -27,7 +27,7 @@ function setupEnums() {
 		dead: 4
 	};
 
-	item_names = ['rollingrock'];
+	item_names = ['rollingrock', 'path'];
 
 
 	tile_types = {
@@ -235,7 +235,8 @@ function setupEnums() {
 				y: 530,
 				properties: {
 					destination: 'FortSampsonOutside'
-				}
+				},
+				type: item_types.path
 			}],
 			collisions: [
 				{

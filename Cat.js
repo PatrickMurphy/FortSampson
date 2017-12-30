@@ -113,14 +113,23 @@ class Cat {
 	}
 
 	collectItem(item) {
-		if (this.inventory.hasOwnProperty(item.type)) {
-			this.inventory[item.type] += 1;
+		console.log('CollectItem');
+		if (item.type.string_id === 'path') {
+			console.log('CollectItem: is path');
+			if (item.properties.hasOwnProperty('destination')) {
+				console.log('CollectItem: has dest');
+				this.collision_man.setLevel(level_properties[item.properties.destination]);
+			}
 		} else {
-			this.inventory[item.type] = 1;
-		}
+			if (this.inventory.hasOwnProperty(item.type)) {
+				this.inventory[item.type] += 1;
+			} else {
+				this.inventory[item.type] = 1;
+			}
 
-		item.parent.collected = true;
-		this.collision_man.removeCollision(item.id);
+			item.parent.collected = true;
+			this.collision_man.removeCollision(item.id);
+		}
 	}
 
 	// Update every frame

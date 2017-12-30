@@ -53,6 +53,7 @@ class Level {
 	loadSVGLevel(level_title) {
 		this.background_image = loadImage("data/levels" + '/' + level_title + '/background.svg');
 
+		// add collision boxes : TODO: use a object that has the 2 points contained
 		if (level_properties[level_title].collisions.length >= 2) {
 			for (var i = 0; i < level_properties[level_title].collisions.length; i += 2) {
 				if (isDefined(level_properties[level_title].collisions[i + 1])) {
@@ -63,9 +64,16 @@ class Level {
 			}
 		}
 
+		// add items
 		for (var j = 0; j < level_properties[level_title].items.length; j++) {
 			var temp_item = level_properties[level_title].items[j];
 			this.items.push(new Item(temp_item.type, createVector(temp_item.x + temp_item.type.offset.x, temp_item.y + temp_item.type.offset.y), this.collisions));
+		}
+
+		// add paths
+		for (var j = 0; j < level_properties[level_title].paths.length; j++) {
+			var temp_path = level_properties[level_title].paths[j];
+			this.items.push(new Item(temp_path.type, createVector(temp_path.x + temp_path.type.offset.x, temp_path.y + temp_path.type.offset.y), this.collisions));
 		}
 	}
 
