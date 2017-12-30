@@ -90,6 +90,7 @@ function setupEnums() {
 		FortSampsonOutside: {
 			hasBG: true,
 			title: 'FortSampsonOutside',
+			playerStart: createVector(0, 6),
 			items: [{
 					x: 685,
 					y: 585,
@@ -227,8 +228,15 @@ function setupEnums() {
 		FortSampsonInside_LivingRoom: {
 			hasBG: true,
 			title: 'FortSampsonInside_LivingRoom',
+			playerStart: createVector(8, 6),
 			items: [],
-			paths: [],
+			paths: [{
+				x: 40,
+				y: 530,
+				properties: {
+					destination: 'FortSampsonOutside'
+				}
+			}],
 			collisions: [
 				{
 					x: 25,

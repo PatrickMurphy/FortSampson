@@ -1,9 +1,7 @@
 var canvas; // this is the reference variable to the html Canvas element that displays the game
 
 var levels_strings; // Used as a collection of all levels
-var levels;
-var level; // the current level object
-var collision_manager;
+var levels; // the level manager
 
 var cell_size; // height width of the cells in the level (80 default)
 var cell_x_count; // Count of total cells to display x axis
@@ -15,9 +13,7 @@ var t3; // Image
 var t4; // Image
 var bg;
 
-var cat1; // Cat the player object
-
-var DEBUG = 'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
+var DEBUG = false; //'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
 
 var item_types;
 
@@ -52,65 +48,37 @@ function setup() {
 	// Map Options
 	level = [];
 	levels = new LevelManager();
-	levels_strings = ["00000001" +
-			  "00000001" +
-			  "00000001" +
-			  "00000001" +
-			  "00000001" +
-			  "00000001" +
-			  "00000002" +
-			  "00000001" +
-			  "00000002" +
-			  "00000001" +
-			  "00000002" +
-			  "00000001" +
-			  "00000001" +
-			  "00000001" +
-			  "00000001"];
 
 	// add enums from file
 	setupEnums();
 
-	collision_manager = new CollisionManager();
-
-	// Add Cat Object, Player 1
-	//cat1 = new Cat(createVector(0, 7), 1, 1, collision_manager);
-
-	// setup level
-	//addLevel(0);
-
 	levels.addLevel(new Level(level_types.svg, {}, level_properties.FortSampsonInside_LivingRoom.title));
 }
 
-// Add a level from an ID
-function addLevel(levelID) {
-	// Split level string to char array
-	var lev = levels_strings[levelID].split('');
+// Draw the frame, the main game loop
+function draw() {
+	levels.display();
 
-	// if we have enough to display
-	if (lev.length >= 80) {
+	if (DEBUG === 'levelEditor') {
+		drawLevelEditor();
+	}
+}
 
-		// For every char in the lvl array
-		for (var i = 0; i <= lev.length; i++) {
-
-			// Determine cell type & items
-			var cell_type = lev[i] == 2 ? 1 : lev[i];
-			var items_temp = lev[i] == 2 ? [item_types.rollingrock] : [];
-
-			// Add this tile
-			level.push(new Tile(indexToVector(i), cell_type, i, items_temp));
-
-			// if not air add collisions
-			if (lev[i] > 0) {
-				// move to tile constructor
-				var loc = indexToDisplay(i);
-				loc.y = loc.y + cell_size - 23;
-				collision_manager.addCollision(new Collision('box', collision_types.floor, loc, createVector(cell_size, 23)));
+// Draw temporary shapes to show where items cliping would be TODO: show items and paths, start point
+// 		GUI to show current tool options, p5dom to show exports and other options, delete current or new, modify existing and new
+//		Allow others to create levels?
+function drawLevelEditor() {
+	text(level_editor_tool + ' Right Click to change', 5, 100); // display current tool
+	if (level_editor_points.collisions.length >= 2) {
+		for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
+			if (typeof level_editor_points.collisions[i + 1] !== 'undefined') {
+				rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
 			}
 		}
 	}
 }
 
+// mouse pressed only for levelEditor for now, but later for menus
 function mousePressed() {
 	if (DEBUG === 'levelEditor') {
 		var tools = ['collisions', 'paths', 'items'];
@@ -120,22 +88,6 @@ function mousePressed() {
 		}
 		if (level_editor_tool === 'collisions') {
 			level_editor_points.collisions.push(createVector(mouseX, mouseY));
-		}
-	}
-}
-
-// Draw the frame, the main game loop
-function draw() {
-	levels.display();
-
-	if (DEBUG === 'levelEditor') {
-		if (level_editor_points.collisions.length >= 2) {
-			text(level_editor_tool, 5, 100);
-			for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
-				if (typeof level_editor_points.collisions[i + 1] !== 'undefined') {
-					rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
-				}
-			}
 		}
 	}
 }

@@ -1,10 +1,11 @@
 class Item {
-	constructor(type, loc, collision_man) {
+	constructor(type, loc, collision_man, properties) {
 		this.location = loc;
 		this.collision_man = collision_man;
 		this.cellLocation = displayToVector(loc);
 		this.type = type; // Type id, refer to comment above
 		this.collected = false;
+		this.properties = properties || {};
 		//this.sizes = sizes; // the unique index count of this tile
 		this.collision_id = this.collision_man.addCollision(new Collision(this.type.string_id, collision_types.item, this.location, createVector(this.type.image.width, this.type.image.height), this));
 	}

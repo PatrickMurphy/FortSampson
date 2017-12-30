@@ -8,8 +8,7 @@ class Level {
 		this.cells = []; // if type = cells
 		this.cell_map = undefined;
 		this.title = undefined;
-		// Add Cat Object, Player 1
-		this.player_cat = new Cat(createVector(0, 6), 1, 1, this.collisions);
+
 
 		if (this.type === level_types.cells) {
 			this.cell_map = titleOrLevelString;
@@ -18,6 +17,9 @@ class Level {
 			this.title = titleOrLevelString;
 			this.loadSVGLevel(this.title);
 		}
+
+		// Add Cat Object, Player 1
+		this.player_cat = new Cat(level_properties[this.title].playerStart, 1, 1, this.collisions);
 	}
 
 	loadCellLevel(cells) {
