@@ -62,7 +62,10 @@ class Cat {
 
 	// Return Boolean if within screen
 	inBounds() {
-		return (this.location.x < width + this.mass && this.location.x > -this.mass && this.location.y < height + this.mass && this.location.y > -this.mass);
+		return (this.location.x < width + this.mass &&
+			this.location.x > -this.mass &&
+			this.location.y < height + this.mass &&
+			this.location.y > -this.mass);
 	}
 
 	handleInput() {
@@ -81,7 +84,9 @@ class Cat {
 				} else {
 					this.setState(states.moving);
 				}
-			} else if ((keyCode === UP_ARROW) && (this.getState() !== states.jumping && this.getState() !== states.movejump)) {
+			} else if ((keyCode === UP_ARROW) &&
+				(this.getState() !== states.jumping &&
+					this.getState() !== states.movejump)) {
 				keyCode = undefined;
 				this.setState(states.jumping);
 

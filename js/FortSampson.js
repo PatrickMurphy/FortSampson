@@ -37,7 +37,6 @@ function setup() {
 	cell_y_count = 9; // zero based equal + 1 ()
 
 	// Map Options
-	level = [];
 	level_manager = new LevelManager();
 
 	// add enums from file
