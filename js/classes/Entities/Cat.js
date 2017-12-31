@@ -103,8 +103,8 @@ class Cat {
 
 	collectItem(item) {
 		if (item.type === 'path') {
-			if (item.parent.properties.hasOwnProperty('destination')) {
-				this.parent.parent.setLevel(level_properties[item.parent.properties.destination]);
+			if (item.properties.hasOwnProperty('destination')) {
+				this.parent.parent.setLevel(level_properties[item.properties.destination]);
 			}
 		} else {
 			if (this.inventory.hasOwnProperty(item.type)) {

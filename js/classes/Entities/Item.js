@@ -5,7 +5,7 @@ class Item {
 		this.type = type; // Type id, refer to comment above
 		this.collected = false;
 		this.properties = properties || {};
-		this.collision_id = this.collision_man.addCollision(new Collision(this.type.string_id, collision_types.item, this.location, createVector(this.type.image.width, this.type.image.height), this.collision_man));
+		this.collision_id = this.collision_man.addCollision(new Collision(this.type.string_id, collision_types.item, this.location, createVector(this.type.image.width, this.type.image.height), this.collision_man, this.properties));
 	}
 
 	display() {

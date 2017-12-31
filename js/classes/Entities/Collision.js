@@ -1,11 +1,12 @@
 class Collision {
-	constructor(typeID, type2, loc, sizes, parent) {
+	constructor(typeID, type2, loc, sizes, parent, props) {
 		this.location = loc;
 		this.type = typeID; // Type id, refer to comment above
 		this.collision_type = type2;
 		this.sizes = sizes; // the unique the height and with of the collider
 		this.id = 0;
 		this.parent = parent || undefined;
+		this.properties = props || {};
 		// TODO: the case statment to assign collisions and objects based on type. json object with properties
 	}
 
