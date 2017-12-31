@@ -1,21 +1,31 @@
 class LevelManager {
 	constructor() {
-		this.level_collection = [];
-		this.current_id = undefined;
+		this.level_collection = {};
+		this.current_title = undefined;
 	}
 
-	initializeLevel(level_property) {
+	initializeLevel(level_property, reset) {
+		reset = reset || false;
+		if (this.level_collection.hasOwnProperty(level_property.title) && !reset) {
+			// if already exists and not requested to reset return current level
+			return this.level_collection[level_property.title];
+		}
+		// or create a new one
 		return new Level(level_property.type, this, level_property.title);
 	}
 
 	addLevel(level, setCurrentBool) {
-		level.id = this.level_collection.length;
+		level.id = Object.keys(this.level_collection).length;
 		setCurrentBool = setCurrentBool || false;
-		this.level_collection.push(level);
-		if (!isDefined(this.current_id) || setCurrentBool) {
-			this.current_id = level.id;
+		if (!this.level_collection.hasOwnProperty(level.title)) {
+			// if it is not defined add the level
+			this.level_collection[level.title] = level;
 		}
-		return level.id;
+		// if setting the level to current or if no current level set it
+		if (!isDefined(this.current_title) || setCurrentBool) {
+			this.current_title = level.title;
+		}
+		return level.title;
 	}
 
 	queueLevel(level) {
@@ -35,18 +45,18 @@ class LevelManager {
 		return this.level_collection;
 	}
 
-	getLevel(id) {
-		id = id || this.current_id;
-		return this.level_collection[id];
+	getLevel(title) {
+		title = title || this.current_title;
+		return this.level_collection[title];
 	}
 
-	removeLevel(id) {
-		delete this.level_collection[id];
+	removeLevel(title) {
+		delete this.level_collection[title];
 	}
 
 	display() {
-		if (isDefined(this.current_id)) {
-			this.level_collection[this.current_id].display();
+		if (isDefined(this.current_title)) {
+			this.level_collection[this.current_title].display();
 		}
 	}
 }
