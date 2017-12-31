@@ -1,4 +1,4 @@
-var item_names, tile_names, tile_types, states, collision_directions, collision_types, level_types;
+var item_names, tile_names, tile_types, states, collision_directions, collision_types, level_types, item_types;
 
 
 function setupEnums() {
@@ -89,6 +89,7 @@ function setupEnums() {
 	level_properties = {
 		FortSampsonOutside: {
 			hasBG: true,
+			type: level_types.svg,
 			title: 'FortSampsonOutside',
 			playerStart: createVector(0, 6),
 			items: [{
@@ -227,6 +228,7 @@ function setupEnums() {
 		},
 		FortSampsonInside_LivingRoom: {
 			hasBG: true,
+			type: level_types.svg,
 			title: 'FortSampsonInside_LivingRoom',
 			playerStart: createVector(8, 6),
 			items: [],

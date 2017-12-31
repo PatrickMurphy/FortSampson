@@ -1,3 +1,5 @@
+// TODO: create class or json object
+
 // convert a cell sequential index to a cell vector
 function indexToVector(index) {
 	return createVector(floor((index) / cell_x_count), index - (floor(index / cell_x_count) * cell_x_count));

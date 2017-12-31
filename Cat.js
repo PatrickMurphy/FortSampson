@@ -113,12 +113,9 @@ class Cat {
 	}
 
 	collectItem(item) {
-		console.log('CollectItem');
-		if (item.type.string_id === 'path') {
-			console.log('CollectItem: is path');
-			if (item.properties.hasOwnProperty('destination')) {
-				console.log('CollectItem: has dest');
-				this.collision_man.setLevel(level_properties[item.properties.destination]);
+		if (item.type === 'path') {
+			if (item.parent.properties.hasOwnProperty('destination')) {
+				level_manager.setLevel(level_properties[item.parent.properties.destination]);
 			}
 		} else {
 			if (this.inventory.hasOwnProperty(item.type)) {
@@ -149,7 +146,7 @@ class Cat {
 			this.checkCollisions(function (collider) {
 				if (collider) {
 					//console.log(collider.type);
-					if (collider.type === item_types.rollingrock.string_id) {
+					if (collider.type === item_types.rollingrock.string_id || collider.type === item_types.path.string_id) {
 						that.collectItem(collider);
 					} else {
 						that.velocity.y = 0;
@@ -168,7 +165,7 @@ class Cat {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					if (collider.type === item_types.rollingrock.string_id) {
+					if (collider.type === item_types.rollingrock.string_id || collider.type === item_types.path.string_id) {
 						that.collectItem(collider);
 					} else if (!keyIsPressed) {
 						//that.velocity.limit(2);

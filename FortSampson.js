@@ -1,7 +1,6 @@
 var canvas; // this is the reference variable to the html Canvas element that displays the game
 
-var levels_strings; // Used as a collection of all levels
-var levels; // the level manager
+var level_manager; // the level manager
 
 var cell_size; // height width of the cells in the level (80 default)
 var cell_x_count; // Count of total cells to display x axis
@@ -14,8 +13,6 @@ var t4; // Image
 var bg;
 
 var DEBUG = false; //'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
-
-var item_types;
 
 var level_editor_tool = 'collisions'; // items, collisions, paths
 var level_editor_points = {
@@ -47,17 +44,17 @@ function setup() {
 
 	// Map Options
 	level = [];
-	levels = new LevelManager();
+	level_manager = new LevelManager();
 
 	// add enums from file
 	setupEnums();
 
-	levels.addLevel(new Level(level_types.svg, {}, level_properties.FortSampsonInside_LivingRoom.title));
+	level_manager.addLevel(level_manager.initializeLevel(level_properties.FortSampsonInside_LivingRoom));
 }
 
 // Draw the frame, the main game loop
 function draw() {
-	levels.display();
+	level_manager.display();
 
 	if (DEBUG === 'levelEditor') {
 		drawLevelEditor();

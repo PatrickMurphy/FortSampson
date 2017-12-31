@@ -73,7 +73,7 @@ class Level {
 		// add paths
 		for (var j = 0; j < level_properties[level_title].paths.length; j++) {
 			var temp_path = level_properties[level_title].paths[j];
-			this.items.push(new Item(temp_path.type, createVector(temp_path.x + temp_path.type.offset.x, temp_path.y + temp_path.type.offset.y), this.collisions));
+			this.items.push(new Item(temp_path.type, createVector(temp_path.x + temp_path.type.offset.x, temp_path.y + temp_path.type.offset.y), this.collisions, temp_path.properties));
 		}
 	}
 

@@ -4,6 +4,10 @@ class LevelManager {
 		this.current_id = undefined;
 	}
 
+	initializeLevel(level_property) {
+		return new Level(level_property.type, this, level_property.title);
+	}
+
 	addLevel(level, setCurrentBool) {
 		level.id = this.level_collection.length;
 		setCurrentBool = setCurrentBool || false;
@@ -19,7 +23,12 @@ class LevelManager {
 	}
 
 	setLevel(level) {
-		this.addLevel(level, true);
+		var the_level = level;
+		if (!(the_level instanceof Level)) {
+			// if no already a level make a level object
+			the_level = this.initializeLevel(level);
+		}
+		this.addLevel(the_level, true);
 	}
 
 	getLevels() {
@@ -27,6 +36,7 @@ class LevelManager {
 	}
 
 	getLevel(id) {
+		id = id || this.current_id;
 		return this.level_collection[id];
 	}
 
