@@ -1,6 +1,7 @@
 class CollisionManager {
-	constructor() {
+	constructor(parent) {
 		this.collision_collection = [];
+		this.parent = parent || undefined;
 	}
 
 	// Collision Functions: Todo add collisions

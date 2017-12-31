@@ -3,34 +3,57 @@
 <head>
 	<meta charset="UTF-8">
 
-	<!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
-	<script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+	<script language="javascript" type="text/javascript" src="js/libraries/p5.js"></script>
 
 	<script language="javascript" type="text/javascript" src="js/Utilities.js"></script>
 	<script language="javascript" type="text/javascript" src="js/enums.js"></script>
+	<script language="javascript" type="text/javascript" src="js/classes/Game.js"></script>
 	<script language="javascript" type="text/javascript" src="js/FortSampson.js"></script>
+	<script language="javascript" type="text/javascript" src="js/classes/Debug/LevelEditor.js"></script>
+
+	<!-- -->
 	<script language="javascript" type="text/javascript" src="js/classes/Managers/CollisionManager.js"></script>
 	<script language="javascript" type="text/javascript" src="js/classes/Managers/LevelManager.js"></script>
 	<script language="javascript" type="text/javascript" src="js/classes/Entities/Collision.js"></script>
 	<script language="javascript" type="text/javascript" src="js/classes/Entities/Level.js"></script>
 	<script language="javascript" type="text/javascript" src="js/classes/Entities/Item.js"></script>
 	<script language="javascript" type="text/javascript" src="js/classes/Entities/Cat.js"></script>
-	<!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
-	<!-- This line removes any default padding and style.
-       You might only need one of these values set. -->
 	<style>
 		body {
 			padding: 0;
 			margin: 0;
 			background: #232323;
+			color: #ddd;
+			font-family: sans-serif;
 		}
+
+		.center_box {
+			margin: auto;
+			width: 800px;
+		}
+
+		#game_title {
+			margin-top: 2em;
+		}
+
+		#game {}
+
+		#game_description {}
 	</style>
 </head>
 
 <body>
 	<div>
-		<div id="game" style="margin:auto; width:800px;margin-top:2em;"></div>
+		<div id="game_title" class="center_box">
+			<h1>Fort Sampson: The Historic Game</h1>
+		</div>
+		<div id="game" class="center_box"></div>
+		<div id="game_description" class="center_box">
+			<p>
+				Use the arrow keys to move and jump!
+			</p>
+		</div>
 	</div>
 </body>
 

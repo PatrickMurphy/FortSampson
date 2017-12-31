@@ -1,48 +1,32 @@
 class Cat {
-	constructor(loc, typeID, i, collision_man) {
-		// The display location of the cat
-		this.location = vectorToDisplay(loc);
+	constructor(loc, parent) {
+		this.location = loc;
 
-		this.cellLocation = loc;
-
-		this.collision_man = collision_man;
-
-		// The cat Type ID: only toby so far // Todo: add cats
-		this.type = typeID;
-
-		// Unique index id
-		this.index = i;
-
-		// Direction the cat is facing State: 1:left, 0: right
-		this.dir = 0;
-
-		//Default floor value y height
-		this.default_floor = height - (109 / 2) - 22;
-
-		// The height of the floor
-		this.floor = this.default_floor;
-
-		// The mass of the cat, have type lookup
-		this.mass = 10;
-
-		// Default Velocity: current velocity, collective from multiple updates
-		this.velocity = createVector(0, 0);
-
-		// Default Acceleration: current vectors applied
-		this.acceleration = new createVector(0, 0);
-
-		this.collision_box = new Collision('box', collision_types.cat, this.location, createVector(t2.width / 2, t2.height / 2));
-
-		this.state = states.idle;
-
-		this.is_colliding = false;
+		this.parent = parent;
 
 		this.inventory = {};
+
+		/*--------------
+		Physics properties
+		----------------*/
+		this.dir = 0; // Direction the cat is facing State: 1:left, 0: right
+
+		this.mass = 10; // The mass of the cat
+
+		this.velocity = createVector(0, 0); // current velocity, collective from multiple updates
+
+		this.acceleration = new createVector(0, 0); // current vectors applied this frame
+
+		this.collision_box = new Collision('box', collision_types.cat, this.location, createVector(t2.width / 2, t2.height / 2), this.parent.collisions);
+
+		this.state = mover_states.idle;
+
+		this.is_colliding = false;
 	}
 
 	setState(state) {
 		this.state = state;
-		if (this.state === states.idle) {
+		if (this.state === mover_states.idle) {
 			this.is_colliding = true;
 		}
 	}
@@ -72,28 +56,28 @@ class Cat {
 		if (keyIsPressed === true) {
 			if (keyCode === LEFT_ARROW) {
 				this.moveLeft();
-				if (this.getState() === states.jumping || this.getState() === states.movejump) {
-					this.setState(states.movejump);
+				if (this.getState() === mover_states.jumping || this.getState() === mover_states.movejump) {
+					this.setState(mover_states.movejump);
 				} else {
-					this.setState(states.moving);
+					this.setState(mover_states.moving);
 				}
 			} else if (keyCode === RIGHT_ARROW) {
 				this.moveRight();
-				if (this.getState() === states.jumping || this.getState() === states.movejump) {
-					this.setState(states.movejump);
+				if (this.getState() === mover_states.jumping || this.getState() === mover_states.movejump) {
+					this.setState(mover_states.movejump);
 				} else {
-					this.setState(states.moving);
+					this.setState(mover_states.moving);
 				}
 			} else if ((keyCode === UP_ARROW) &&
-				(this.getState() !== states.jumping &&
-					this.getState() !== states.movejump)) {
+				(this.getState() !== mover_states.jumping &&
+					this.getState() !== mover_states.movejump)) {
 				keyCode = undefined;
-				this.setState(states.jumping);
+				this.setState(mover_states.jumping);
 
 				this.moveUp();
 			}
-		} else if (this.getState() !== states.jumping && this.getState() !== states.movejump) {
-			this.setState(states.idle);
+		} else if (this.getState() !== mover_states.jumping && this.getState() !== mover_states.movejump) {
+			this.setState(mover_states.idle);
 		}
 		keyCode = undefined;
 	}
@@ -104,15 +88,15 @@ class Cat {
 		var temp_vel = this.velocity.copy();
 		temp_vel.add(this.acceleration.copy());
 		ccd.location.add(temp_vel);
-		for (var i = 0; i < this.collision_man.getCollisions().length; i++) {
-			if (isDefined(this.collision_man.getCollision(i))) {
-				if (this.collision_man.getCollision(i).intersects(ccd) !== false) {
+		for (var i = 0; i < this.parent.collisions.getCollisions().length; i++) {
+			if (isDefined(this.parent.collisions.getCollision(i))) {
+				if (this.parent.collisions.getCollision(i).intersects(ccd) !== false) {
 					this.is_colliding = true;
-					callback(this.collision_man.getCollision(i));
+					callback(this.parent.collisions.getCollision(i));
 				}
 			}
 		}
-		//this.setState(states.jumping);
+		//this.setState(mover_states.jumping);
 		this.is_colliding = false;
 		callback(false);
 	}
@@ -120,7 +104,7 @@ class Cat {
 	collectItem(item) {
 		if (item.type === 'path') {
 			if (item.parent.properties.hasOwnProperty('destination')) {
-				level_manager.setLevel(level_properties[item.parent.properties.destination]);
+				this.parent.parent.setLevel(level_properties[item.parent.properties.destination]);
 			}
 		} else {
 			if (this.inventory.hasOwnProperty(item.type)) {
@@ -130,16 +114,15 @@ class Cat {
 			}
 
 			item.parent.collected = true;
-			this.collision_man.removeCollision(item.id);
+			this.parent.collisions.removeCollision(item.id);
 		}
 	}
 
 	// Update every frame
 	update() {
-		this.cellLocation = displayToVector(this.location);
 		this.handleInput();
 
-		if (this.state !== states.idle) {
+		if (this.state !== mover_states.idle) {
 			this.applyForce(createVector(0, 1.4)); // gravity
 		}
 
@@ -157,10 +140,10 @@ class Cat {
 						that.velocity.y = 0;
 						that.acceleration.mult(0);
 						//that.location.y -= 1;
-						if (that.getState() === states.movejump) {
-							that.setState(states.moving);
-						} else if (that.getState() !== states.moving) {
-							that.setState(states.idle);
+						if (that.getState() === mover_states.movejump) {
+							that.setState(mover_states.moving);
+						} else if (that.getState() !== mover_states.moving) {
+							that.setState(mover_states.idle);
 						}
 					}
 					//this.applyForce(createVector(0, -10));
@@ -217,18 +200,17 @@ class Cat {
 		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
 		fill(0, 0, 255);
 		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
-		if (DEBUG !== false) {
+		if (this.parent.parent.parent.DEBUG_STATE !== debug_states.off) {
 			ellipse(this.location.x, this.location.y, 3, 3);
 		}
-		if (DEBUG === 'col') {
+		if (this.parent.parent.parent.DEBUG_STATE === debug_states.collisions) {
 			fill(color(255, 0, 0));
 			if (this.is_colliding) {
 				ellipse(25, 25, 15, 15);
 			}
 
-			text(Object.keys(states)[this.state], 16, 50);
+			text(Object.keys(mover_states)[this.state], 16, 50);
 			text(Math.round(this.velocity.x) + ', ' + round(this.velocity.y), 16, 60);
-			text(this.cellLocation.x + ', ' + this.cellLocation.y, 16, 70);
 			this.collision_box.display();
 		}
 	}

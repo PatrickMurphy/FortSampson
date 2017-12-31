@@ -1,10 +1,9 @@
 class Collision {
 	constructor(typeID, type2, loc, sizes, parent) {
 		this.location = loc;
-		this.cellLocation = displayToVector(loc);
 		this.type = typeID; // Type id, refer to comment above
 		this.collision_type = type2;
-		this.sizes = sizes; // the unique index count of this tile
+		this.sizes = sizes; // the unique the height and with of the collider
 		this.id = 0;
 		this.parent = parent || undefined;
 		// TODO: the case statment to assign collisions and objects based on type. json object with properties
@@ -67,8 +66,8 @@ class Collision {
 	}
 
 	display() {
-		if (DEBUG === 'col' || DEBUG === 'levelEditor') {
-			fill(map(this.cellLocation.x, 0, cell_x_count, 0, 127.5) + map(this.cellLocation.y, 0, cell_y_count, 0, 127.5));
+		if (this.parent.parent.parent.parent.DEBUG_STATE !== debug_states.off) {
+			fill(color(55, 55, 55));
 			if (this.collision_type.direction === collision_directions.all) {
 				stroke(0);
 			} else {

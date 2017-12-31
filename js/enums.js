@@ -1,7 +1,16 @@
-var item_names, tile_names, tile_types, states, collision_directions, collision_types, level_types, item_types;
-
+var item_names, item_types;
+var tile_names, tile_types;
+var collision_directions, collision_types;
+var mover_states, level_types;
+var debug_states;
 
 function setupEnums() {
+	debug_states = {
+		off: 0,
+		collisions: 1,
+		level_editor: 2
+	};
+
 	item_types = {
 		rollingrock: {
 			id: 0,
@@ -19,7 +28,7 @@ function setupEnums() {
 		}
 	};
 
-	states = {
+	mover_states = {
 		idle: 0,
 		moving: 1,
 		jumping: 2,

@@ -1,7 +1,8 @@
 class LevelManager {
-	constructor() {
+	constructor(parent) {
 		this.level_collection = {};
 		this.current_title = undefined;
+		this.parent = parent;
 	}
 
 	initializeLevel(level_property, reset) {
