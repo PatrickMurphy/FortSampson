@@ -104,7 +104,7 @@ class Cat {
 	collectItem(item) {
 		if (item.type === 'path') {
 			if (item.properties.hasOwnProperty('destination')) {
-				this.parent.parent.setLevel(level_properties[item.properties.destination]);
+				this.parent.parent.setLevel(level_properties[item.properties.destination], this);
 			}
 		} else {
 			if (this.inventory.hasOwnProperty(item.type)) {
@@ -116,6 +116,10 @@ class Cat {
 			item.parent.collected = true;
 			this.parent.collisions.removeCollision(item.id);
 		}
+	}
+
+	setPosition(vector) {
+		this.location = vector;
 	}
 
 	// Update every frame

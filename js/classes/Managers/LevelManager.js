@@ -5,14 +5,14 @@ class LevelManager {
 		this.parent = parent;
 	}
 
-	initializeLevel(level_property, reset) {
+	initializeLevel(level_property, reset, cat) {
 		reset = reset || false;
 		if (this.level_collection.hasOwnProperty(level_property.title) && !reset) {
 			// if already exists and not requested to reset return current level
 			return this.level_collection[level_property.title];
 		}
 		// or create a new one
-		return new Level(level_property.type, this, level_property.title);
+		return new Level(level_property.type, this, level_property.title, cat);
 	}
 
 	addLevel(level, setCurrentBool) {
@@ -33,11 +33,11 @@ class LevelManager {
 		this.addLevel(level, false);
 	}
 
-	setLevel(level) {
+	setLevel(level, cat) {
 		var the_level = level;
 		if (!(the_level instanceof Level)) {
 			// if no already a level make a level object
-			the_level = this.initializeLevel(level);
+			the_level = this.initializeLevel(level, false, cat);
 		}
 		this.addLevel(the_level, true);
 	}

@@ -1,5 +1,5 @@
 class Level {
-	constructor(typeID, parent, titleOrLevelString) {
+	constructor(typeID, parent, titleOrLevelString, cat) {
 		this.type = typeID; // Type id, refer to comment above
 		this.parent = parent || undefined;
 		this.collisions = new CollisionManager(this);
@@ -11,7 +11,12 @@ class Level {
 		this.loadSVGLevel(this.title);
 
 		// Add Cat Object, Player 1
-		this.player_cat = new Cat(level_properties[this.title].playerStart, this);
+		if (isDefined(cat)) {
+			this.player_cat = cat;
+			this.player_cat.setPosition(level_properties[this.title].playerStart);
+		} else {
+			this.player_cat = new Cat(level_properties[this.title].playerStart, this);
+		}
 	}
 
 	loadSVGLevel(level_title) {
