@@ -1,6 +1,7 @@
 var canvas; // this is the reference variable to the html Canvas element that displays the game
 
 var level_manager; // the level manager
+var level_editor;
 
 var cell_size; // height width of the cells in the level (80 default)
 var cell_x_count; // Count of total cells to display x axis
@@ -13,13 +14,6 @@ var t4; // Image
 var bg;
 
 var DEBUG = false; //'levelEditor'; // Debug flag, false is normal, true for bg, 'col' for collisions
-
-var level_editor_tool = 'collisions'; // items, collisions, paths
-var level_editor_points = {
-	items: [],
-	paths: [],
-	collisions: []
-};
 
 function preload() {
 	//t1 = loadImage('data/tile1.png');
@@ -48,6 +42,9 @@ function setup() {
 
 	// add enums from file
 	setupEnums();
+	if (DEBUG === 'levelEditor') {
+		level_editor = new LevelEditor();
+	}
 
 	level_manager.addLevel(level_manager.initializeLevel(level_properties.FortSampsonInside_LivingRoom));
 }
@@ -57,34 +54,13 @@ function draw() {
 	level_manager.display();
 
 	if (DEBUG === 'levelEditor') {
-		drawLevelEditor();
-	}
-}
-
-// Draw temporary shapes to show where items cliping would be TODO: show items and paths, start point
-// 		GUI to show current tool options, p5dom to show exports and other options, delete current or new, modify existing and new
-//		Allow others to create levels?
-function drawLevelEditor() {
-	text(level_editor_tool + ' Right Click to change', 5, 100); // display current tool
-	if (level_editor_points.collisions.length >= 2) {
-		for (var i = 0; i < level_editor_points.collisions.length; i += 2) {
-			if (isDefined(level_editor_points.collisions[i + 1])) {
-				rect(level_editor_points.collisions[i].x, level_editor_points.collisions[i].y, level_editor_points.collisions[i + 1].x - level_editor_points.collisions[i].x, level_editor_points.collisions[i + 1].y - level_editor_points.collisions[i].y)
-			}
-		}
+		level_editor.display();
 	}
 }
 
 // mouse pressed only for levelEditor for now, but later for menus
 function mousePressed() {
 	if (DEBUG === 'levelEditor') {
-		var tools = ['collisions', 'paths', 'items'];
-		console.log(mouseX, mouseY);
-		if (mouseButton === RIGHT) {
-			level_editor_tool = tools[(tools.indexOf(level_editor_tool) + 1) % tools.length];
-		}
-		if (level_editor_tool === 'collisions') {
-			level_editor_points.collisions.push(createVector(mouseX, mouseY));
-		}
+		level_editor.handleClick();
 	}
 }

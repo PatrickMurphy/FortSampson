@@ -27,14 +27,6 @@ function displayToIndex(display) {
 	return vectorToIndex(displayToVector(display));
 }
 
-function printPoints() {
-	var string_out = '';
-	for (var i = 0; i < level_editor_points.collisions.length; i++) {
-		string_out += '{x:' + Math.round(level_editor_points.collisions[i].x) + ',y:' + Math.round(level_editor_points.collisions[i].y) + '},';
-	}
-	console.log(string_out);
-}
-
 function isDefined(testVariable) {
 	return (typeof testVariable !== 'undefined'); // if the variable is not undefined return true
 }
