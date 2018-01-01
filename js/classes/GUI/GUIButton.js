@@ -1,11 +1,15 @@
 class GUIButton {
-	constructor(btnName, btnPos, size, btnTextSize, btnFont) {
+	constructor(btnName, btnPos, size, parent, clickHandler) {
 		this.name = btnName;
+		this.parent = parent;
 		this.position = btnPos || createVector();
 		this.size = size;
 		//this.btnFont = btnFont || createFont("Georgia", txtSize);
-		this.btnTextSize = btnTextSize || 15;
+		this.btnTextSize = 15;
 		this.pressed = false;
+		this.clickHandler = clickHandler || function () {
+			console.log('default');
+		};
 	}
 
 	display() {
@@ -29,5 +33,11 @@ class GUIButton {
 
 	onButton(x, y) {
 		return (x >= this.position.x && y >= this.position.y && x <= this.position.x + this.size.x && y <= this.position.y + this.size.y);
+	}
+
+	handleClick() {
+		if (this.onButton(mouseX, mouseY)) {
+			this.clickHandler(this, this.parent);
+		}
 	}
 }

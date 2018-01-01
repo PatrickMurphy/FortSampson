@@ -14,7 +14,7 @@ class Game {
 	}
 
 	display() {
-		if (this.menu.menu_state === menu_states.main_menu) {
+		if (this.menu.menu_state !== menu_states.game) {
 			this.menu.display();
 		} else {
 			this.level_manager.display();

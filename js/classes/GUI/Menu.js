@@ -1,6 +1,8 @@
 class Menu {
 	constructor(state) {
-		this.elements = {};
+		this.elements = {
+			"game": []
+		};
 		this.menu_state = state || menu_states.main_menu;
 		this.particle_system = new ParticleSystem(createVector(200, 400));
 		this.addMainMenu();
@@ -21,11 +23,11 @@ class Menu {
 		var half_size = createVector(width * .32, standard_size.y);
 		// choose a cat
 		// start game
-		this.addElement(menu_states.main_menu, new GUIButton("Start Game", init_pos, standard_size));
+		this.addElement(menu_states.main_menu, new GUIButton("Start Game", init_pos, standard_size, this, this.handleMainMenuClick));
 		// settings
-		this.addElement(menu_states.main_menu, new GUIButton("Settings", init_pos.copy().add(createVector(0, height * .12)), half_size));
+		this.addElement(menu_states.main_menu, new GUIButton("Settings", init_pos.copy().add(createVector(0, height * .12)), half_size, this, this.handleMainMenuClick));
 		// about
-		this.addElement(menu_states.main_menu, new GUIButton("About", init_pos.copy().add(createVector(width * .34, height * .12)), half_size));
+		this.addElement(menu_states.main_menu, new GUIButton("About", init_pos.copy().add(createVector(width * .34, height * .12)), half_size, this, this.handleMainMenuClick));
 	}
 
 	displayMainMenu() {
@@ -33,6 +35,16 @@ class Menu {
 		this.particle_system.update();
 		this.particle_system.display();
 		image(menuFG, 0, 0);
+	}
+
+	handleMainMenuClick(element, that) {
+		if (element.name === 'Start Game') {
+			that.menu_state = menu_states.game;
+		} else if (element.name === 'Settings') {
+			that.menu_state = menu_states.settings;
+		} else if (element.name === 'About') {
+			that.menu_state = menu_states.settings;
+		}
 	}
 
 	displayGUIElements() {
@@ -47,9 +59,16 @@ class Menu {
 			this.displayMainMenu();
 		}
 		this.displayGUIElements();
+		this.handleClicks();
 	}
 
 	handleClicks() {
-
+		if (mouseIsPressed) {
+			for (var i = 0; i < this.elements[this.menu_state].length; i++) {
+				if (this.elements[this.menu_state][i].constructor.name === GUIButton.name) {
+					this.elements[this.menu_state][i].handleClick();
+				}
+			}
+		}
 	}
 }
