@@ -2,6 +2,7 @@ class Menu {
 	constructor(state) {
 		this.elements = {};
 		this.menu_state = state || menu_states.main_menu;
+		this.particle_system = new ParticleSystem(createVector(200, 400));
 		this.addMainMenu();
 	}
 
@@ -15,7 +16,7 @@ class Menu {
 	}
 
 	addMainMenu() {
-		var init_pos = createVector(width / 6, height / 1.4);
+		var init_pos = createVector(width / 6, height / 1.35);
 		var standard_size = createVector(width * .66, height * .1);
 		var half_size = createVector(width * .32, standard_size.y);
 		// choose a cat
@@ -27,11 +28,25 @@ class Menu {
 		this.addElement(menu_states.main_menu, new GUIButton("About", init_pos.copy().add(createVector(width * .34, height * .12)), half_size));
 	}
 
-	display() {
-		background(color(150, 150, 150));
+	displayMainMenu() {
+		image(menuBG, 0, 0);
+		this.particle_system.update();
+		this.particle_system.display();
+		image(menuFG, 0, 0);
+	}
+
+	displayGUIElements() {
 		for (var i = 0; i < this.elements[this.menu_state].length; i++) {
 			this.elements[this.menu_state][i].display();
 		}
+	}
+
+	display() {
+		background(color(150, 150, 150));
+		if (this.menu_state === menu_states.main_menu) {
+			this.displayMainMenu();
+		}
+		this.displayGUIElements();
 	}
 
 	handleClicks() {

@@ -3,7 +3,7 @@ var canvas; // this is the reference variable to the html Canvas element that di
 var t2; // Image
 var t3; // Image
 var t4; // Image
-var bg;
+var bg, menuBG, menuFG;
 
 var GAMEOBJ;
 
@@ -12,6 +12,8 @@ function preload() {
 	t3 = loadImage('data/tobyr.png');
 	t4 = loadImage('data/rollingrock.svg');
 	bg = loadImage('data/Level1Outside.svg');
+	menuBG = loadImage('data/MenuBG.svg');
+	menuFG = loadImage('data/MenuFG.svg');
 }
 
 function setup() {
