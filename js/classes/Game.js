@@ -1,6 +1,7 @@
 class Game {
 	constructor() {
 		this.DEBUG_STATE = debug_states.off;
+		this.menu = new Menu();
 
 		// Map Options
 		this.level_manager = new LevelManager(this);
@@ -13,9 +14,13 @@ class Game {
 	}
 
 	display() {
-		this.level_manager.display();
-		if (this.DEBUG_STATE === debug_states.level_editor) {
-			this.level_editor.display();
+		if (this.menu.menu_state === menu_states.main_menu) {
+			this.menu.display();
+		} else {
+			this.level_manager.display();
+			if (this.DEBUG_STATE === debug_states.level_editor) {
+				this.level_editor.display();
+			}
 		}
 	}
 

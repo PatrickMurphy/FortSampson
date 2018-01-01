@@ -3,12 +3,21 @@ var tile_names, tile_types;
 var collision_directions, collision_types;
 var mover_states, level_types;
 var debug_states;
+var menu_states;
 
 function setupEnums() {
 	debug_states = {
 		off: 0,
 		collisions: 1,
 		level_editor: 2
+	};
+
+	menu_states = {
+		game: "game",
+		pause: "pause",
+		main_menu: "main_menu",
+		game_over: "game_over",
+		settings: "settings"
 	};
 
 	item_types = {
