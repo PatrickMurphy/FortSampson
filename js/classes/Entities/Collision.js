@@ -80,6 +80,10 @@ class Collision {
 				line(this.location.x, this.location.y, this.location.x + this.sizes.x, this.location.y);
 				noStroke();
 			}
+		} else {
+			stroke(0, 70);
+			line(this.location.x, this.location.y, this.location.x + this.sizes.x, this.location.y);
+			noStroke();
 		}
 	}
 }

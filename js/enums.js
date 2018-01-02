@@ -109,7 +109,7 @@ function setupEnums() {
 			hasBG: true,
 			type: level_types.svg,
 			title: 'FortSampsonOutside',
-			playerStart: createVector(0, 6),
+			playerStart: createVector(50, 500),
 			items: [{
 					x: 685,
 					y: 585,
@@ -248,7 +248,7 @@ function setupEnums() {
 			hasBG: true,
 			type: level_types.svg,
 			title: 'FortSampsonInside_LivingRoom',
-			playerStart: createVector(8, 6),
+			playerStart: createVector(700, 500),
 			items: [],
 			paths: [{
 				x: 40,
