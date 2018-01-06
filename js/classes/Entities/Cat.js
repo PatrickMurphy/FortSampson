@@ -1,6 +1,6 @@
-class Cat {
+class Cat extends Entity {
 	constructor(loc, parent) {
-		this.location = loc;
+		super(loc);
 
 		this.parent = parent;
 
@@ -9,13 +9,7 @@ class Cat {
 		/*--------------
 		Physics properties
 		----------------*/
-		this.dir = 0; // Direction the cat is facing State: 1:left, 0: right
-
-		this.mass = 10; // The mass of the cat
-
-		this.velocity = createVector(0, 0); // current velocity, collective from multiple updates
-
-		this.acceleration = new createVector(0, 0); // current vectors applied this frame
+		this.dir = 0; // Direction the cat is facing State: 1:left, 0: right TODO: use vector to decide
 
 		this.collision_box = new Collision('box', collision_types.cat, this.location, createVector(t2.width / 2, t2.height / 2), this.parent.collisions);
 
@@ -33,23 +27,6 @@ class Cat {
 
 	getState() {
 		return this.state;
-	}
-
-	// Apply vector force to cat physics
-	applyForce(force) {
-		// Scale To mass
-		var f = p5.Vector.div(force, this.mass);
-
-		// Apply to this frames accel
-		this.acceleration.add(f);
-	}
-
-	// Return Boolean if within screen
-	inBounds() {
-		return (this.location.x < width + this.mass &&
-			this.location.x > -this.mass &&
-			this.location.y < height + this.mass &&
-			this.location.y > -this.mass);
 	}
 
 	handleInput() {
@@ -118,10 +95,6 @@ class Cat {
 		}
 	}
 
-	setPosition(vector) {
-		this.location = vector;
-	}
-
 	// Update every frame
 	update() {
 		this.handleInput();
@@ -130,14 +103,10 @@ class Cat {
 			this.applyForce(createVector(0, 1.4)); // gravity
 		}
 
-
-		//this.applyForce(createVector(0, 1.4)); // gravity
-
 		if (this.is_colliding === false && this.velocity.y > 0) {
 			var that = this;
 			this.checkCollisions(function (collider) {
 				if (collider) {
-					//console.log(collider.type);
 					if (collider.type === item_types.rollingrock.string_id || collider.type === item_types.path.string_id) {
 						that.collectItem(collider);
 					} else {
@@ -150,9 +119,8 @@ class Cat {
 							that.setState(mover_states.idle);
 						}
 					}
-					//this.applyForce(createVector(0, -10));
 				}
-			});
+				});
 		} else {
 			var that = this;
 			this.checkCollisions(function (collider) {
@@ -160,23 +128,13 @@ class Cat {
 					if (collider.type === item_types.rollingrock.string_id || collider.type === item_types.path.string_id) {
 						that.collectItem(collider);
 					} else if (!keyIsPressed) {
-						//that.velocity.limit(2);
 						that.velocity.x *= 0.35;
 					}
 				}
 			});
 		}
 
-
-		// Update physics
-		this.velocity.add(this.acceleration);
-		this.location.add(this.velocity);
-		this.acceleration.mult(0);
-	}
-
-	distance(m) {
-		// distance to another location object
-		return dist(m.location.x, m.location.y, this.location.x, this.location.y);
+		super.update();
 	}
 
 	// Move Left Action, left arrow
@@ -193,17 +151,24 @@ class Cat {
 
 	// Jump action, up arrow TODO: Add Space button, wasd
 	moveUp() {
-		//this.location.y -= 5;
 		this.applyForce(createVector(0, -45));
+	}
+
+	getImage() {
+		return this.dir == 1 ? t2 : t3;
+	}
+
+	drawCatGUI() {
+		fill(0, 0, 255);
+		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
 	}
 
 	// display the cat
 	display() {
 		// Display cat image, use ternary to decide what image based on direction
 		// TODO: use a function to determine image, enable animation
-		image(this.dir == 1 ? t2 : t3, this.location.x, this.location.y, 140 / 2, 109 / 2);
-		fill(0, 0, 255);
-		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
+		image(this.getImage(), this.location.x, this.location.y, 140 / 2, 109 / 2);
+		this.drawCatGUI();
 		if (this.parent.parent.parent.DEBUG_STATE !== debug_states.off) {
 			ellipse(this.location.x, this.location.y, 3, 3);
 		}

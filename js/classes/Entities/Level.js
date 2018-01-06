@@ -13,7 +13,7 @@ class Level {
 		// Add Cat Object, Player 1
 		if (isDefined(cat) && false) {
 			this.player_cat = cat;
-			this.player_cat.setPosition(level_properties[this.title].playerStart);
+			this.player_cat.setLocation(level_properties[this.title].playerStart);
 			this.player_cat.parent = this;
 		} else {
 			this.player_cat = new Cat(level_properties[this.title].playerStart, this);
