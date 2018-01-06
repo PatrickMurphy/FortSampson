@@ -32,7 +32,7 @@ function setupEnums() {
 			id: 1,
 			string_id: 'path',
 			title: 'path',
-			image: t4,
+			image: pathImage,
 			offset: createVector(0, -15)
 		}
 	};
@@ -111,6 +111,13 @@ function setupEnums() {
 			title: 'FortSampsonOutside',
 			playerStart: createVector(50, 500),
 			items: [{
+					x: 350,
+					y: 515,
+					properties: {
+						destination: 'FortSampsonInside_LivingRoom'
+					},
+					type: item_types.path
+			}, {
 					x: 685,
 					y: 585,
 					type: item_types.rollingrock
@@ -249,7 +256,46 @@ function setupEnums() {
 			type: level_types.svg,
 			title: 'FortSampsonInside_LivingRoom',
 			playerStart: createVector(700, 500),
-			items: [],
+			items: [{
+					x: 650,
+					y: 530,
+					type: item_types.rollingrock
+				},
+				{
+					x: 860,
+					y: 495,
+					type: item_types.rollingrock
+				},
+				{
+					x: 560,
+					y: 420,
+					type: item_types.rollingrock
+				},
+				{
+					x: 460,
+					y: 420,
+					type: item_types.rollingrock
+				},
+				{
+					x: 360,
+					y: 420,
+					type: item_types.rollingrock
+				},
+				{
+					x: 490,
+					y: 330,
+					type: item_types.rollingrock
+				},
+				{
+					x: 590,
+					y: 330,
+					type: item_types.rollingrock
+				},
+				{
+					x: 185,
+					y: 425,
+					type: item_types.rollingrock
+				}],
 			paths: [{
 				x: 40,
 				y: 530,

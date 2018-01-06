@@ -3,6 +3,12 @@ class Menu {
 		this.elements = {
 			"game": []
 		};
+		this.main_menu_settings = {
+			canPile_xoffset: -3,
+			canPile_yOffset: height - 200,
+			canPile_yLimit: 33,
+			canPile_ySpeed: .045
+		};
 		this.menu_state = state || menu_states.main_menu;
 		this.particle_system = new ParticleSystem(createVector(200, 400));
 		this.addMainMenu();
@@ -31,7 +37,9 @@ class Menu {
 	}
 
 	displayMainMenu() {
+		this.main_menu_settings.canPile_yOffset = max(this.main_menu_settings.canPile_yOffset - this.main_menu_settings.canPile_ySpeed, this.main_menu_settings.canPile_yLimit);
 		image(menuBG, 0, 0);
+		image(menuCans, this.main_menu_settings.canPile_xoffset, this.main_menu_settings.canPile_yOffset);
 		this.particle_system.update();
 		this.particle_system.display();
 		image(menuFG, 0, 0);

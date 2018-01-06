@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3310917"
-     inkscape:cx="380.39321"
+     inkscape:cx="447.28695"
      inkscape:cy="197.09787"
      inkscape:document-units="mm"
      inkscape:current-layer="layer9"
@@ -91,6 +91,13 @@
        d="M 230.54297 378.46484 C 152.01708 378.60349 74.680638 388.17853 -0.69921875 416.12891 L -0.69921875 466.66211 L 800 466.66211 L 800 417.28906 C 612.91526 430.85626 422.33525 379.56042 238.14648 378.48047 C 235.61094 378.4656 233.07606 378.46037 230.54297 378.46484 z "
        transform="scale(0.26458333)"
        id="rect6707" />
+    <rect
+       style="opacity:1;fill:#8fc6ab;fill-opacity:1;stroke:none;stroke-width:0.32306361;stroke-opacity:1"
+       id="rect51908"
+       width="149.04872"
+       height="41.174206"
+       x="63.520832"
+       y="80.513298" />
     <path
        style="display:inline;opacity:1;fill:#209000;fill-opacity:1;stroke:none;stroke-width:0.40877721;stroke-opacity:1"
        d="m -0.10377291,119.22291 c 115.55239291,-6.52282 182.75274291,-6.60652 211.84282291,0 v 50.48234 H -0.10377291 Z"
