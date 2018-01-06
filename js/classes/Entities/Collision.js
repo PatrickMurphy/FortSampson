@@ -1,6 +1,6 @@
-class Collision {
+class Collision extends Entity {
 	constructor(typeID, type2, loc, sizes, parent, props) {
-		this.location = loc;
+		super(loc);
 		this.type = typeID; // Type id, refer to comment above
 		this.collision_type = type2;
 		this.sizes = sizes; // the unique the height and with of the collider

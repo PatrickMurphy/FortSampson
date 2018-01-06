@@ -1,20 +1,28 @@
-class Particle {
+class Particle extends Entity {
 	constructor(parent) {
+		super(parent.getSource());
+
+		// Parent reference
 		this.parent = parent;
-		// location Pvector
-		this.location = parent.getSource();
+
 		// velocity vector
 		this.velocity = this.getInitVelocity();
+
 		// mass for nature of code patterns
 		this.mass = random(2, 5);
 
 		this.rotation = floor(random(0, 360));
+
+		// radius
 		this.r = 25;
+
 		// current acceleration vector
 		this.acceleration = createVector(0, 0);
+
 		// fill color
 		this.image = t4;
 
+		// Scale of this particle
 		this.scale = random(.3, .8);
 	}
 
@@ -22,23 +30,11 @@ class Particle {
 		return createVector(-4, random(-1, 1)).mult(random(.8, 2)).copy();
 	}
 
-	applyForce(force) {
-		var f = p5.Vector.div(force, this.mass);
-		this.acceleration.add(f);
-	}
-
 	update() {
 		this.applyForce(createVector(0, 1));
-		this.velocity.add(this.acceleration);
-		this.location.add(this.velocity);
-		this.acceleration.mult(0);
+		super.update();
 		this.checkCollisions();
-		if (random(0, 1000) > 750) {
-			this.rotation = (this.rotation + .4);
-			if (this.rotation > 360) {
-				this.rotation = 0;
-			}
-		}
+		this.randomRotation();
 	}
 	display() {
 		push();
@@ -47,6 +43,15 @@ class Particle {
 		scale(this.scale);
 		image(this.image, 0, 0);
 		pop();
+	}
+
+	randomRotation() {
+		if (random(0, 1000) > 750) {
+			this.rotation = (this.rotation + .4);
+			if (this.rotation > 360) {
+				this.rotation = 0;
+			}
+		}
 	}
 	reset() {
 		this.location = this.parent.getSource();

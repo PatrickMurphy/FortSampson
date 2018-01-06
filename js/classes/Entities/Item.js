@@ -1,6 +1,6 @@
-class Item {
+class Item extends Entity {
 	constructor(type, loc, collision_man, properties) {
-		this.location = loc;
+		super(loc);
 		this.collision_man = collision_man;
 		this.type = type; // Type id, refer to comment above
 		this.collected = false;
