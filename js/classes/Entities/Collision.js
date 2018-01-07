@@ -67,7 +67,7 @@ class Collision extends Entity {
 	}
 
 	display() {
-		if (this.parent.parent.parent.parent.DEBUG_STATE !== debug_states.off) {
+		if (GAMEOBJ.DEBUG_STATE !== debug_states.off) {
 			fill(color(55, 55, 55));
 			if (this.collision_type.direction === collision_directions.all) {
 				stroke(0);
