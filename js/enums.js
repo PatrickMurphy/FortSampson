@@ -111,13 +111,6 @@ function setupEnums() {
 			title: 'FortSampsonOutside',
 			playerStart: createVector(50, 500),
 			items: [{
-					x: 350,
-					y: 515,
-					properties: {
-						destination: 'FortSampsonInside_LivingRoom'
-					},
-					type: item_types.path
-			}, {
 					x: 685,
 					y: 585,
 					type: item_types.rollingrock
@@ -170,7 +163,14 @@ function setupEnums() {
 					y: 210,
 					type: item_types.rollingrock
 				}],
-			paths: [],
+			paths: [{
+				x: 350,
+				y: 515,
+				properties: {
+					destination: 'FortSampsonInside_LivingRoom'
+				},
+				type: item_types.path
+			}],
 			collisions: [{
 					x: 40,
 					y: 589

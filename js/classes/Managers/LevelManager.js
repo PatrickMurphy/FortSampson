@@ -21,6 +21,9 @@ class LevelManager {
 		if (!this.level_collection.hasOwnProperty(level.title)) {
 			// if it is not defined add the level
 			this.level_collection[level.title] = level;
+		} else {
+			console.log('add existing level');
+			this.level_collection[level.title].player_cat.location = level_properties[level.title].playerStart;
 		}
 		// if setting the level to current or if no current level set it
 		if (!isDefined(this.current_title) || setCurrentBool) {
