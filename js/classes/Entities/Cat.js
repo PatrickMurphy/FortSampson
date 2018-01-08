@@ -84,11 +84,13 @@ class Cat extends Entity {
 				this.parent.parent.setLevel(level_properties[item.properties.destination], this);
 			}
 		} else {
-			if (this.inventory.hasOwnProperty(item.type)) {
-				this.inventory[item.type] += 1;
-			} else {
-				this.inventory[item.type] = 1;
-			}
+			//if (this.inventory.hasOwnProperty(item.type)) {
+			//this.inventory[item.type] += 1;
+			//} else {
+			//	this.inventory[item.type] = 1;
+			//}
+
+			this.parent.parent.parent.inventory_manager.increment(item.type);
 
 			item.parent.collected = true;
 			this.parent.collisions.removeCollision(item.id);
@@ -160,7 +162,7 @@ class Cat extends Entity {
 
 	drawCatGUI() {
 		fill(0, 0, 255);
-		text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
+		//text('Inventory: ' + this.inventory['rollingrock'], 5, 10);
 	}
 
 	// display the cat

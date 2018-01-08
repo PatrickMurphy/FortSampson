@@ -25,8 +25,6 @@ function setup() {
 	canvas = createCanvas(800, 640, P2D);
 	canvas.parent("#game");
 
-	textAlign(CENTER);
-
 	// add enums from file
 	setupEnums();
 

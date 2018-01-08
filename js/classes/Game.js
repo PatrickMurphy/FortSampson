@@ -2,6 +2,7 @@ class Game {
 	constructor() {
 		this.DEBUG_STATE = debug_states.off;
 		this.menu = new Menu();
+		this.inventory_manager = new InventoryManager();
 
 		// Map Options
 		this.level_manager = new LevelManager(this);
@@ -10,7 +11,7 @@ class Game {
 		if (this.DEBUG_STATE === debug_states.level_editor) {
 			this.level_editor = new LevelEditor();
 		}
-		this.level_manager.addLevel(this.level_manager.initializeLevel(level_properties.FortSampsonInside_LivingRoom));
+		this.level_manager.setLevel(level_properties.FortSampsonInside_LivingRoom);
 	}
 
 	display() {
@@ -22,6 +23,7 @@ class Game {
 				this.level_editor.display();
 			}
 		}
+		this.inventory_manager.display();
 	}
 
 	handleClicks() {
