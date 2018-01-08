@@ -25,8 +25,11 @@ class CollisionManager {
 
 	display() {
 		for (var i = 0; i < this.collision_collection.length; i++) {
-			if (isDefined(this.collision_collection[i]))
-				this.collision_collection[i].display();
+			if (isDefined(this.collision_collection[i])) {
+				if (this.collision_collection[i].collision_type !== collision_types.item) {
+					this.collision_collection[i].display();
+				}
+			}
 		}
 	}
 

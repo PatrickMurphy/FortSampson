@@ -3,6 +3,7 @@ class LevelManager {
 		this.level_collection = {};
 		this.current_title = undefined;
 		this.parent = parent;
+		//this.player_cat =
 	}
 
 	initializeLevel(level_property, reset, cat) {
@@ -22,11 +23,13 @@ class LevelManager {
 			// if it is not defined add the level
 			this.level_collection[level.title] = level;
 		} else {
-			console.log('add existing level');
-			this.level_collection[level.title].player_cat.location = level_properties[level.title].playerStart;
+			//console.log('add existing level');
+			this.level_collection[this.current_title].player_cat.location = level_properties[this.current_title].playerStart.copy();
+			//this.level_collection[level.title].player_cat.location = level_properties[level.title].playerStart.copy();
 		}
 		// if setting the level to current or if no current level set it
 		if (!isDefined(this.current_title) || setCurrentBool) {
+			console.log(this.current_title, level.title);
 			this.current_title = level.title;
 		}
 		return level.title;

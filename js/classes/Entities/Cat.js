@@ -99,7 +99,7 @@ class Cat extends Entity {
 	update() {
 		this.handleInput();
 
-		if (this.state !== mover_states.idle) {
+		if (this.state !== mover_states.idle && !this.is_colliding) {
 			this.applyForce(createVector(0, 1.4)); // gravity
 		}
 
@@ -120,7 +120,7 @@ class Cat extends Entity {
 						}
 					}
 				}
-				});
+			});
 		} else {
 			var that = this;
 			this.checkCollisions(function (collider) {
